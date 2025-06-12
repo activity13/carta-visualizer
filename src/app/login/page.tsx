@@ -3,6 +3,19 @@
 import { FormEvent, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+
 export default function Login() {
   const [error, setError] = useState("");
   const router = useRouter();
@@ -29,28 +42,47 @@ export default function Login() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Login Form</h1>
-      <fieldset>
-        <legend>Login Form</legend>
-        <label htmlFor="username">Username or email to login:</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          placeholder="Enter your username"
-          required
-        />
-        <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="******"
-          required
-        />
-        {error && <p className="text-red-500">{error}</p>}
-        <button className="bg-blue-500">Login</button>
-      </fieldset>
-    </form>
+    <div className="flex items-center justify-center min-h-screen ">
+      <Card className="w-76 md:w-96  mx-auto mt-10 bg-black/30 backdrop-blur-md border-none">
+        <CardHeader>
+          <CardTitle>Login</CardTitle>
+          <CardDescription className="card-foreground">
+            Please enter your credentials to login.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit}>
+            <div className="flex flex-col gap-6">
+              <div className="grid gap-2">
+                <Label htmlFor="username">Username</Label>
+                <Input
+                  type="text"
+                  className="bg-gray-900"
+                  id="username"
+                  name="username"
+                  placeholder="Enter your username"
+                  required
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  type="password"
+                  className="bg-gray-900"
+                  id="password"
+                  name="password"
+                  placeholder="******"
+                  required
+                />
+              </div>
+            </div>
+            <div className="grid gap-2">
+              {error && <p className="text-red-500">{error}</p>}
+              <Button className="bg-blue-500">Login</Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
