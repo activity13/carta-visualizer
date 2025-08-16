@@ -39,6 +39,9 @@ const handler = NextAuth({
       },
     }),
   ],
+  session: {
+    maxAge: 60 * 60 * 24, // 1 day
+  },
   callbacks: {
     jwt({ account, token, user, profile, session }) {
       if (user) token.user = user;

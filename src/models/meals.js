@@ -1,5 +1,5 @@
 // models/Meal.js
-const { Schema, model } = require("mongoose");
+const { Schema, model, models } = require("mongoose");
 
 // Sub-schema para variantes/opciones
 const VariantOptionSchema = new Schema({
@@ -507,8 +507,9 @@ MealSchema.statics.findFeatured = function (restaurantId, limit = 6) {
     .sort({ "metrics.orderCount": -1, "display.order": 1 })
     .limit(limit);
 };
+const Meal = models.Meal || model("Meal", MealSchema);
 
-module.exports = model("Meal", MealSchema);
+export default Meal;
 
 // Ejemplo de uso:
 /*
