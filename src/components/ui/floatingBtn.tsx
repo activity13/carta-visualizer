@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-export default function FloatingButton(value: any) {
+export default function FloatingButton() {
   return (
     <div className="fixed bottom-4 right-4">
       <Button

@@ -14,7 +14,7 @@ const handler = NextAuth({
         username: { label: "Username", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         await connectToDatabase();
         const userFound = await User.findOne({
           $or: [
@@ -43,11 +43,12 @@ const handler = NextAuth({
     maxAge: 60 * 60 * 24, // 1 day
   },
   callbacks: {
-    jwt({ account, token, user, profile, session }) {
+    jwt({ token, user }) {
       if (user) token.user = user;
       return token;
     },
     session({ session, token }) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       session.user = token.user as any;
       return session;
     },

@@ -1,7 +1,7 @@
-const { NextResponse } = require("next/server");
+import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
 import Meal from "@/models/meals";
-export async function GET(req: Request, res: Response) {
+export async function GET(req: Request) {
   try {
     await connectToDatabase();
     // Query de prueba mientras se implementa la lógica

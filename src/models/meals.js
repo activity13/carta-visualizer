@@ -1,5 +1,5 @@
 // models/Meal.js
-const { Schema, model, models } = require("mongoose");
+import { Schema, model, models } from "mongoose";
 
 // Sub-schema para variantes/opciones
 const VariantOptionSchema = new Schema({

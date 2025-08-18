@@ -3,7 +3,6 @@ import { connectToDatabase } from "@/lib/mongodb";
 import MealSchema from "@/models/meals";
 import RestaurantSchema from "@/models/restaurants";
 import CategorySchema from "@/models/categories";
-import test from "node:test";
 export async function POST(request: Request) {
   try {
     await connectToDatabase();
