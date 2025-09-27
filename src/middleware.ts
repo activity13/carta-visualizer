@@ -12,7 +12,7 @@ export default withAuth(
     // --- ROOT (landing page) ---
     if (currentHost === mainDomain || currentHost === "localhost") {
       if (url.pathname === "/") {
-        return NextResponse.next(); // landing siempre pública
+        return NextResponse.next();
       }
     }
 
@@ -31,12 +31,18 @@ export default withAuth(
     }
 
     // --- RESTAURANTES ---
+    let subdomain = "";
+    if (currentHost.endsWith(mainDomain)) {
+      subdomain = currentHost.replace(`.${mainDomain}`, "");
+    } else if (currentHost.endsWith("localhost")) {
+      subdomain = currentHost.replace(".localhost", "");
+    }
+
     if (
-      currentHost !== "localhost" &&
-      currentHost !== mainDomain &&
-      !currentHost.startsWith("app.")
+      subdomain &&
+      url.pathname !== `/${subdomain}` &&
+      !url.pathname.startsWith(`/${subdomain}/`)
     ) {
-      const subdomain = currentHost.replace(`.${mainDomain}`, "");
       url.pathname = `/${subdomain}${url.pathname}`;
       return NextResponse.rewrite(url);
     }
@@ -47,27 +53,16 @@ export default withAuth(
     callbacks: {
       authorized: ({ token, req }) => {
         const url = req.nextUrl;
-
-        // acceso libre al landing y login
-        if (
-          url.pathname === "/" ||
-          url.pathname.startsWith("/backoffice/login")
-        ) {
-          return true;
+        // Permite acceso público a todo menos backoffice
+        if (url.pathname.startsWith("/backoffice")) {
+          return !!token;
         }
-
-        // para todo lo demás: requiere sesión
-        return !!token;
+        return true;
       },
     },
   }
 );
 
 export const config = {
-  matcher: [
-    // Protegemos todas las rutas MENOS:
-    // - archivos estáticos
-    // - la raíz "/"
-    "/((?!_next|.*\\..*|api/auth|$).*)",
-  ],
+  matcher: ["/((?!_next|.*\\..*|api/auth).*)"],
 };
