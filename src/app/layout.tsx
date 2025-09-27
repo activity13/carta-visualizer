@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import NavBar from "@/components/ui/navBar";
-import Providers from "./Providers";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -15,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Yacarta",
-  description: "Administra tu carta con Yacarta",
+  title: "VIWCarta",
+  description: "Administra tu carta con VIWCarta",
 };
 
 export default function RootLayout({
@@ -25,14 +23,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="es">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers>
-          <NavBar />
-          {children}
-        </Providers>
+        {children}
       </body>
     </html>
   );

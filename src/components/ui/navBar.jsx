@@ -10,11 +10,11 @@ import {
 
 export default function NavBar() {
   return (
-    <NavigationMenu className="p-6">
+    <NavigationMenu className="p-6 absolute">
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuLink asChild>
-            <Link href="/" className="flex-row items-center gap-2">
+            <Link href="/backoffice" className="flex-row items-center gap-2">
               <Home className="mr-2 h-4 w-4" />
               Home
             </Link>

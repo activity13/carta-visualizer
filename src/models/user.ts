@@ -24,6 +24,21 @@ const userSchema = new Schema(
     },
     password: { type: String, required: true, select: false },
 
+    // NextAuth multi-restaurante: referencia al restaurante
+    restaurantId: {
+      type: Schema.Types.ObjectId,
+      ref: "Restaurant",
+      required: true,
+    },
+
+    // Rol para autorización
+    role: {
+      type: String,
+      enum: ["admin", "staff", "viewer"],
+      default: "viewer",
+      required: true,
+    },
+
     isActive: {
       type: Boolean,
       default: true,
@@ -45,8 +60,7 @@ const userSchema = new Schema(
   }
 );
 
-//Esquema resumido para escribir en la base de datos
-// User: fullName, username, email, password, isActive, createdAt, updatedAt
+// User: fullName, username, email, password, restaurantId, role, isActive, createdAt, updatedAt
 
 const User = models.User || model("User", userSchema);
 

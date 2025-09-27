@@ -7,10 +7,10 @@ export async function GET() {
     await connectToDatabase();
     // Query de prueba mientras se implementa la lógica
     const restauranteDePrueba = await Restaurant.findOne({
-      name: "la-k",
+      name: "La K",
     });
     const meals = await Meal.find({ restaurantId: restauranteDePrueba?._id });
-    console.log("Las comidas se han cargado.");
+    console.log(restauranteDePrueba);
     return NextResponse.json(meals, { status: 200 });
   } catch (error) {
     console.error("Error interno en el servidor", error);

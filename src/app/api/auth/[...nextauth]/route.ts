@@ -43,18 +43,21 @@ const handler = NextAuth({
     maxAge: 60 * 60 * 24, // 1 day
   },
   callbacks: {
-    jwt({ token, user }) {
-      if (user) token.user = user;
+    async jwt({ token, user }) {
+      if (user && user.restaurantId) {
+        token.restaurantId = user.restaurantId.toString();
+      }
       return token;
     },
-    session({ session, token }) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      session.user = token.user as any;
+    async session({ session, token }) {
+      if (session.user && token.restaurantId) {
+        session.user.restaurantId = token.restaurantId;
+      }
       return session;
     },
   },
   pages: {
-    signIn: "/login",
+    signIn: "/backoffice/login",
   },
 });
 

@@ -1,17 +1,73 @@
-export { default } from "next-auth/middleware";
+import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
-import { NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 
-export function middleware(request: NextRequest) {
-  const host = request.headers.get("host") || "";
-  const subdomain = host.split(".")[0];
-  // Aquí puedes agregar lógica para manejar el subdominio si es necesario
-  // Por ejemplo, podrías redirigir a una ruta específica según el subdominio
-  if (subdomain === "la-k") {
-    return NextResponse.rewrite(new URL("/la-k", request.url));
+export default withAuth(
+  function middleware(req: NextRequest) {
+    const url = req.nextUrl;
+    const hostname = req.headers.get("host") || "";
+    const currentHost = hostname.split(":")[0];
+    const mainDomain = "viwcarta.com";
+
+    // --- ROOT (landing page) ---
+    if (currentHost === mainDomain || currentHost === "localhost") {
+      if (url.pathname === "/") {
+        return NextResponse.next(); // landing siempre pública
+      }
+    }
+
+    // --- BACKOFFICE ---
+    if (
+      currentHost === `app.${mainDomain}` ||
+      currentHost === "app.localhost"
+    ) {
+      if (
+        url.pathname.startsWith("/backoffice/login") ||
+        url.pathname.startsWith("/api/auth")
+      ) {
+        return NextResponse.next();
+      }
+      return NextResponse.next();
+    }
+
+    // --- RESTAURANTES ---
+    if (
+      currentHost !== "localhost" &&
+      currentHost !== mainDomain &&
+      !currentHost.startsWith("app.")
+    ) {
+      const subdomain = currentHost.replace(`.${mainDomain}`, "");
+      url.pathname = `/${subdomain}${url.pathname}`;
+      return NextResponse.rewrite(url);
+    }
+
+    return NextResponse.next();
+  },
+  {
+    callbacks: {
+      authorized: ({ token, req }) => {
+        const url = req.nextUrl;
+
+        // acceso libre al landing y login
+        if (
+          url.pathname === "/" ||
+          url.pathname.startsWith("/backoffice/login")
+        ) {
+          return true;
+        }
+
+        // para todo lo demás: requiere sesión
+        return !!token;
+      },
+    },
   }
-}
+);
 
 export const config = {
-  matcher: ["/", "/dashboard/:path*", "/register", "/master/:path*"],
+  matcher: [
+    // Protegemos todas las rutas MENOS:
+    // - archivos estáticos
+    // - la raíz "/"
+    "/((?!_next|.*\\..*|api/auth|$).*)",
+  ],
 };
