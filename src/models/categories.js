@@ -1,27 +1,57 @@
 import { Schema, model, models } from "mongoose";
 
-const CategorySchema = new Schema({
-  name: {
-    type: String,
-    required: [true, "El nombre de la categoría es obligatorio"],
-    trim: true,
-    maxlength: [100, "El nombre no puede exceder 100 caracteres"],
+const CategorySchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "El nombre de la categoría es obligatorio"],
+      trim: true,
+      maxlength: [100, "El nombre no puede exceder 100 caracteres"],
+    },
+    code: {
+      type: Number,
+      required: [true, "El código de la categoría es obligatorio"],
+      unique: true,
+      trim: true,
+      maxlength: [10, "El código no puede exceder 10 caracteres"],
+    },
+    slug: {
+      type: String,
+      required: [true, "El slug de la categoría es obligatorio"],
+      unique: true,
+      lowercase: true,
+      trim: true,
+    },
+    description: {
+      type: String,
+      trim: true,
+      maxlength: [300, "La descripción no puede exceder 300 caracteres"],
+      default: "",
+    },
+    restaurantId: {
+      type: Schema.Types.ObjectId,
+      ref: "Restaurant",
+      required: true,
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      required: true,
+    },
+    updatedAt: {
+      type: Date,
+      default: Date.now,
+      required: true,
+    },
   },
-  code: {
-    type: Number,
-    required: [true, "El código de la categoría es obligatorio"],
-    unique: true,
-    trim: true,
-    maxlength: [10, "El código no puede exceder 10 caracteres"],
-  },
-  slug: {
-    type: String,
-    required: [true, "El slug de la categoría es obligatorio"],
-    unique: true,
-    lowercase: true,
-    trim: true,
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 const Categories = models.Categories || model("Categories", CategorySchema);
 

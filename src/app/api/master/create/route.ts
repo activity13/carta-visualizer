@@ -15,6 +15,7 @@ export async function POST(request: Request) {
     const newMeal = new MealSchema({
       restaurantId: test_restaurant?._id,
       categoryId: test_category?._id,
+      category: a.category || "",
       name: a.name,
       description: a.description,
       shortDescription: a.shortDescription,

@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function LaK() {
+export default function LaKarta() {
   return (
     <div className="max-w-6xl mx-auto text-black">
       <h1 className="text-4xl font-bold mb-6">CartaMímica - La K</h1>

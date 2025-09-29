@@ -166,7 +166,12 @@ const MealSchema = new Schema(
       required: true,
       index: true,
     },
-
+    category: {
+      type: String,
+      trim: true,
+      default: "",
+      required: false,
+    },
     // Datos del plato
     name: {
       type: String,

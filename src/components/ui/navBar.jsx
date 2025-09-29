@@ -1,6 +1,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { LogOut, Cog, Home } from "lucide-react";
+import LogoutButton from "./LogoutButton";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -30,13 +31,7 @@ export default function NavBar() {
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuLink asChild>
-            <Link
-              href="/api/auth/signout"
-              className="flex-row items-center gap-2"
-            >
-              <LogOut className="mr-2 h-4 w-4" />
-              Logout
-            </Link>
+            <LogoutButton />
           </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>

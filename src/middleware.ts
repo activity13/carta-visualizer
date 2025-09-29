@@ -53,11 +53,13 @@ export default withAuth(
     callbacks: {
       authorized: ({ token, req }) => {
         const url = req.nextUrl;
-        // Permite acceso público a todo menos backoffice
-        if (url.pathname.startsWith("/backoffice")) {
-          return !!token;
+        if (
+          url.pathname.startsWith("/backoffice/login") ||
+          url.pathname.startsWith("/api/auth")
+        ) {
+          return true;
         }
-        return true;
+        return !!token;
       },
     },
   }

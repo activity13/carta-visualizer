@@ -1,6 +1,6 @@
 import Master from "@/components/ui/master";
 import { Button } from "@/components/ui/button";
-
+import { Link } from "lucide-react";
 export default function DashboardPage() {
   return (
     <>
@@ -22,7 +22,9 @@ export default function DashboardPage() {
     focus:outline-none focus:ring-2 focus:ring-green-700
   "
         >
-          <span>Elige tus categorías aquí</span>
+          <Link href="/backoffice/categories">
+            <span>Elige tus categorías aquí</span>
+          </Link>
         </Button>
         <Master />
       </section>
