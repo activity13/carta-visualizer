@@ -28,7 +28,6 @@ export default function CategoryUI({ restaurantId }: { restaurantId: string }) {
   // Fetch categories
   const fetchCategories = async () => {
     setLoading(true);
-    console.log("Fetching categories for restaurantId:", restaurantId);
     try {
       const res = await Axios.get("/api/categories/get", {
         params: { restaurantId },
