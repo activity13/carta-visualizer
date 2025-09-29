@@ -13,12 +13,6 @@ export default function CategoriesPage() {
 
   return (
     <>
-      <button
-        className="bg-blue-500 m-24 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        onClick={() => console.log(restaurantId)}
-      >
-        test
-      </button>
       <CategoryUI restaurantId={restaurantId} />
     </>
   );

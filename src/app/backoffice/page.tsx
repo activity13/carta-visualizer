@@ -1,12 +1,16 @@
+"use client";
 import Master from "@/components/ui/master";
 import { Button } from "@/components/ui/button";
-import { Link } from "lucide-react";
+import { useRouter } from "next/navigation";
 export default function DashboardPage() {
+  const router = useRouter();
   return (
     <>
       <section className="flex flex-col items-center  gap-6 p-4">
         <h1 className="text-4xl font-bold">Bienvenido</h1>
+
         <Button
+          onClick={() => router.push("/backoffice/categories")}
           className="
     w-full max-w-lg
     bg-green-900
@@ -22,10 +26,9 @@ export default function DashboardPage() {
     focus:outline-none focus:ring-2 focus:ring-green-700
   "
         >
-          <Link href="/backoffice/categories">
-            <span>Elige tus categorías aquí</span>
-          </Link>
+          Elige tus categorías aquí
         </Button>
+
         <Master />
       </section>
     </>
