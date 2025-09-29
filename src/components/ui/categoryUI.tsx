@@ -42,14 +42,12 @@ export default function CategoryUI({ restaurantId }: { restaurantId: string }) {
 
   useEffect(() => {
     if (restaurantId) fetchCategories();
-    // eslint-disable-next-line
   }, [restaurantId]);
 
   // Create category
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    console.log("Creating category for restaurantId:", restaurantId);
     try {
       await Axios.post("/api/categories/create", {
         ...form,
@@ -80,6 +78,7 @@ export default function CategoryUI({ restaurantId }: { restaurantId: string }) {
       fetchCategories();
     } catch (error) {
       // Manejo de error
+      console.error(error);
     } finally {
       setLoading(false);
     }
