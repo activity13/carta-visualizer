@@ -99,7 +99,7 @@ export default function CategoryUI({ restaurantId }: { restaurantId: string }) {
   const handleSaveEdit = async (id: string) => {
     setLoading(true);
     try {
-      await Axios.put("/api/categories/edit", {
+      await Axios.put("/api/categories/update", {
         id,
         ...editForm,
         code: Number(editForm.code),
@@ -110,6 +110,7 @@ export default function CategoryUI({ restaurantId }: { restaurantId: string }) {
       fetchCategories();
     } catch (error) {
       // Manejo de error
+      console.error(error);
     } finally {
       setLoading(false);
     }
