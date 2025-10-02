@@ -40,17 +40,27 @@ const handler = NextAuth({
     }),
   ],
   session: {
-    maxAge: 60 * 60 * 24, // 1 day
+    strategy: "jwt",
+    maxAge: 60 * 60 * 24,
+    updateAge: 60 * 60,
   },
   callbacks: {
     async jwt({ token, user }) {
-      if (user && user.restaurantId) {
-        token.restaurantId = user.restaurantId.toString();
+      // Solo si es la primera vez (cuando el usuario inicia sesión)
+      if (user) {
+        token.restaurantId = user.restaurantId?.toString();
+        token.exp = Math.floor(Date.now() / 1000) + 60 * 60 * 24; // expira en 1 día
       }
+
+      // Si el token ya existe y expira pronto, no lo refresques cada vez
+      if (!token.exp) {
+        token.exp = Math.floor(Date.now() / 1000) + 60 * 60 * 24;
+      }
+
       return token;
     },
     async session({ session, token }) {
-      if (session.user && token.restaurantId) {
+      if (session.user) {
         session.user.restaurantId = token.restaurantId;
       }
       return session;

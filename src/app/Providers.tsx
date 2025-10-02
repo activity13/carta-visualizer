@@ -7,5 +7,12 @@ interface Props {
 }
 
 export default function Providers({ children }: Props) {
-  return <SessionProvider>{children}</SessionProvider>;
+  return (
+    <SessionProvider
+      refetchInterval={0} // 🚫 nunca hagas polling
+      refetchOnWindowFocus={false} // 🚫 no refresques al volver a la pestaña
+    >
+      {children}
+    </SessionProvider>
+  );
 }
