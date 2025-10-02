@@ -5,24 +5,19 @@ import RestaurantSchema from "@/models/restaurants";
 import CategorySchema from "@/models/categories";
 export async function POST(request: Request) {
   try {
+    const { formData, restaurantId } = await request.json();
     await connectToDatabase();
-    const test_restaurant = await RestaurantSchema.findOne({
-      name: "la-k",
-    });
-    const test_category = await CategorySchema.findOne({ code: 1 });
-    console.log(test_category);
-    const a = await request.json();
+    console.log("ID recibido:", restaurantId);
     const newMeal = new MealSchema({
-      restaurantId: test_restaurant?._id,
-      categoryId: test_category?._id,
-      category: a.category || "",
-      name: a.name,
-      description: a.description,
-      shortDescription: a.shortDescription,
+      restaurantId: restaurantId,
+      categoryId: formData?.categoryId,
+      name: formData.name,
+      description: formData.description,
+      shortDescription: formData.shortDescription,
 
       // Precios
-      basePrice: a?.basePrice,
-      comparePrice: a?.comparePrice,
+      basePrice: formData?.basePrice,
+      comparePrice: formData?.comparePrice,
 
       // Imágenes
       images: [],
@@ -69,7 +64,7 @@ export async function POST(request: Request) {
     console.error("Error interno en el servidor", error);
     return NextResponse.json(
       {
-        error: "Ha ocurrido un problema. Por favor, intenta nuevamente",
+        error: "Ha ocurrido un problemformData. Por favor, intenta nuevamente",
         error_message:
           error instanceof Error ? error.message : "Error desconocido",
       },

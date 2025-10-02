@@ -16,7 +16,6 @@ export async function GET(request: Request) {
     }
 
     const categories = await CategorySchema.find({ restaurantId });
-    console.log(categories);
     return NextResponse.json(categories, { status: 200 });
   } catch (error) {
     console.error("Error interno en el servidor", error);

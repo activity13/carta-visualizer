@@ -13,6 +13,9 @@ export async function POST(request: Request) {
           description: formData.description,
           shortDescription: formData.shortDescription,
 
+          // Información básica
+          categoryId: formData?.categoryId,
+
           // Precios
           basePrice: formData?.basePrice,
           comparePrice: formData?.comparePrice,

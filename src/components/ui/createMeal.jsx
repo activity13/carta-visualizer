@@ -2,8 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Axios, { AxiosError } from "axios";
-import mongoose from "mongoose";
-import { ChevronDown, Plus, X, Upload, Save, Eye } from "lucide-react";
+import { Plus, X, Upload, Save, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -23,9 +22,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { set } from "mongoose";
 
-const CreateMealForm = ({ fetchMeals, mealId, isOpen, onClose }) => {
+const CreateMealForm = ({
+  restaurantId,
+  fetchMeals,
+  mealId,
+  isOpen,
+  onClose,
+}) => {
   const [formData, setFormData] = useState({
     // Información básica
     restaurantId: "",
@@ -74,6 +78,7 @@ const CreateMealForm = ({ fetchMeals, mealId, isOpen, onClose }) => {
     // SEO
     searchTags: [""],
   });
+  const [categories, setCategories] = useState([]);
   const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("basic");
   const [editMode, setEditMode] = useState(false);
@@ -216,8 +221,10 @@ const CreateMealForm = ({ fetchMeals, mealId, isOpen, onClose }) => {
       const response = await Axios.get(`/api/master/edit`, {
         params: { id },
       });
-      console.log("Fetched product data:", response);
-      setFormData(response.data);
+      setFormData({
+        ...response.data,
+        categoryId: response.data.categoryId?.toString() || "",
+      });
     } catch (error) {
       console.error("Error fetching product:", error);
     }
@@ -241,7 +248,10 @@ const CreateMealForm = ({ fetchMeals, mealId, isOpen, onClose }) => {
         onClose();
       } else {
         // Aquí iría la lógica para crear un nuevo plato
-        const actionResponse = await Axios.post("/api/master/create", formData);
+        const actionResponse = await Axios.post("/api/master/create", {
+          formData,
+          restaurantId,
+        });
         console.log("Response from backend:", actionResponse.data);
         fetchMeals();
         setFormData(initialFormData);
@@ -270,9 +280,23 @@ const CreateMealForm = ({ fetchMeals, mealId, isOpen, onClose }) => {
     { id: "availability", label: "Disponibilidad" },
     { id: "display", label: "Configuración" },
   ];
+  useEffect(() => {
+    if (!restaurantId) return;
+    const fetchCategories = async () => {
+      try {
+        const res = await Axios.get("/api/categories/get", {
+          params: { restaurantId },
+        });
+        setCategories(res.data);
+      } catch (error) {
+        setCategories([]);
+        console.error("Error fetching categories:", error);
+      }
+    };
+    fetchCategories();
+  }, [restaurantId]);
 
   useEffect(() => {
-    console.log(mealId);
     if (mealId === undefined) {
       return;
     }
@@ -333,35 +357,13 @@ const CreateMealForm = ({ fetchMeals, mealId, isOpen, onClose }) => {
             {activeTab === "basic" && (
               <div className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="min-w-full">
-                    <label className="block text-xs sm:text-sm font-medium text-white mb-1">
-                      Restaurante *
-                    </label>
-                    <Select
-                      defaultValue={formData.restaurantId}
-                      onValueChange={(value) =>
-                        handleInputChange("restaurantId", value)
-                      }
-                      required
-                    >
-                      <SelectTrigger className="w-full p-2 sm:p-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <SelectValue placeholder="Seleccionar restaurante" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>Restaurante</SelectLabel>
-                          <SelectItem value="rest1">La K</SelectItem>
-                          <SelectItem value="rest2">La K 2</SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </div>
                   <div>
                     <label className="block text-xs sm:text-sm font-medium text-white mb-1">
                       Categoría *
                     </label>
+
                     <Select
-                      defaultValue={formData.categoryId}
+                      value={formData.categoryId}
                       onValueChange={(value) =>
                         handleInputChange("categoryId", value)
                       }
@@ -373,12 +375,19 @@ const CreateMealForm = ({ fetchMeals, mealId, isOpen, onClose }) => {
                       <SelectContent>
                         <SelectGroup>
                           <SelectLabel>Categorías</SelectLabel>
-                          <SelectItem value="cat1">Entradas</SelectItem>
-                          <SelectItem value="cat2">
-                            Platos Principales
-                          </SelectItem>
-                          <SelectItem value="cat3">Postres</SelectItem>
-                          <SelectItem value="cat4">Bebidas</SelectItem>
+                          {categories.length === 0 && (
+                            <SelectItem value="no-categories" disabled>
+                              No hay categorías disponibles
+                            </SelectItem>
+                          )}
+                          {categories.map((cat) => (
+                            <SelectItem
+                              key={cat._id}
+                              value={cat._id.toString()}
+                            >
+                              {cat.name}
+                            </SelectItem>
+                          ))}
                         </SelectGroup>
                       </SelectContent>
                     </Select>

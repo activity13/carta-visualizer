@@ -55,6 +55,8 @@ function filterMeals(
 
 export default function Master() {
   const { data: session } = useSession();
+
+  const restaurantId = session?.user?.restaurantId;
   const [loadingId, setLoadingId] = useState<ObjectId | null>(null);
   const [meals, setMeals] = useState<Meal[]>([]);
   const [productId, setProductId] = useState<ObjectId | null>(null);
@@ -277,6 +279,7 @@ export default function Master() {
         </CardContent>
       </Card>
       <CreateMealForm
+        restaurantId={restaurantId}
         isOpen={isDialogEditing}
         onClose={toggleDialog}
         fetchMeals={fetchMeals}

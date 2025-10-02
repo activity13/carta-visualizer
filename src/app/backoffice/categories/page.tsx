@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import CategoryUI from "@/components/ui/categoryUI";
 import { useSession } from "next-auth/react";
 export default function CategoriesPage() {

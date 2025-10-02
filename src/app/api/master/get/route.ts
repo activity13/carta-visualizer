@@ -2,15 +2,15 @@ import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
 import Meal from "@/models/meals";
 import Restaurant from "@/models/restaurants";
-export async function GET() {
+export async function GET(request: Request) {
   try {
     await connectToDatabase();
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("restaurantId");
     // Query de prueba mientras se implementa la lógica
-    const restauranteDePrueba = await Restaurant.findOne({
-      name: "La K",
-    });
-    const meals = await Meal.find({ restaurantId: restauranteDePrueba?._id });
-    console.log(restauranteDePrueba);
+    const restaurant = await Restaurant.findById(id);
+    console.log("restaurante cargado exitosamente", restaurant);
+    const meals = await Meal.find({ restaurantId: restaurant?._id });
     return NextResponse.json(meals, { status: 200 });
   } catch (error) {
     console.error("Error interno en el servidor", error);
