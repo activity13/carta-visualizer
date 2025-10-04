@@ -11,9 +11,7 @@ export default withAuth(
 
     // --- ROOT (landing page) ---
     if (currentHost === mainDomain || currentHost === "localhost") {
-      if (url.pathname === "/") {
-        return NextResponse.next();
-      }
+      if (url.pathname === "/") return NextResponse.next();
     }
 
     // --- BACKOFFICE ---
@@ -21,6 +19,7 @@ export default withAuth(
       currentHost === `app.${mainDomain}` ||
       currentHost === "app.localhost"
     ) {
+      // login y api auth son públicos
       if (
         url.pathname.startsWith("/backoffice/login") ||
         url.pathname.startsWith("/api/auth")
@@ -30,7 +29,7 @@ export default withAuth(
       return NextResponse.next();
     }
 
-    // --- RESTAURANTES ---
+    // --- RESTAURANTES (público) ---
     let subdomain = "";
     if (currentHost.endsWith(mainDomain)) {
       subdomain = currentHost.replace(`.${mainDomain}`, "");
@@ -53,18 +52,31 @@ export default withAuth(
     callbacks: {
       authorized: ({ token, req }) => {
         const url = req.nextUrl;
+        const hostname = req.headers.get("host") || "";
+        const currentHost = hostname.split(":")[0];
+        const mainDomain = "viwcarta.com";
+
+        // --- BACKOFFICE protegido ---
         if (
-          url.pathname.startsWith("/backoffice/login") ||
-          url.pathname.startsWith("/api/auth")
+          currentHost === `app.${mainDomain}` ||
+          currentHost === "app.localhost"
         ) {
-          return true;
+          if (
+            url.pathname.startsWith("/backoffice/login") ||
+            url.pathname.startsWith("/api/auth")
+          ) {
+            return true; // login y auth abiertos
+          }
+          return !!token; // el resto sí requiere sesión
         }
-        return !!token;
+
+        // --- TODO LO DEMÁS ES PÚBLICO ---
+        return true;
       },
     },
   }
 );
 
 export const config = {
-  matcher: ["/((?!_next|.*\\..*|api/auth).*)"],
+  matcher: ["/((?!_next|.*\\..*|api/).*)"],
 };
