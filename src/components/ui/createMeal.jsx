@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import Axios, { AxiosError } from "axios";
 import { Plus, X, Upload, Save, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { revalidateMenu } from "../utils/revalidateMenu";
+import { useSession } from "next-auth/react";
 import {
   Dialog,
   DialogClose,
@@ -83,6 +85,7 @@ const CreateMealForm = ({
   const [activeTab, setActiveTab] = useState("basic");
   const [editMode, setEditMode] = useState(false);
   const [id, setId] = useState("");
+
   const initialFormData = {
     // Información básica
     restaurantId: "",
@@ -166,6 +169,8 @@ const CreateMealForm = ({
     { value: "archived", label: "Archivado" },
   ];
 
+  const { data: session } = useSession();
+  const slug = session?.user?.slug;
   // Handlers
   const handleInputChange = (field, value) => {
     if (field.includes(".")) {
@@ -241,6 +246,7 @@ const CreateMealForm = ({
           },
           formData,
         });
+        // revalidateMenu(slug);
         console.log("Response from backend:", actionResponse.data);
         fetchMeals();
         setFormData(initialFormData);
@@ -252,6 +258,7 @@ const CreateMealForm = ({
           formData,
           restaurantId,
         });
+        revalidateMenu(slug);
         console.log("Response from backend:", actionResponse.data);
         fetchMeals();
         setFormData(initialFormData);

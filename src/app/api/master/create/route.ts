@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
 import MealSchema from "@/models/meals";
-import RestaurantSchema from "@/models/restaurants";
-import CategorySchema from "@/models/categories";
 export async function POST(request: Request) {
   try {
     const { formData, restaurantId } = await request.json();

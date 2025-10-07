@@ -35,11 +35,12 @@ export default function CategoryUI({ restaurantId }: { restaurantId: string }) {
       setCategories(res.data);
     } catch (error) {
       // Manejo de error
+      console.error(error);
     } finally {
       setLoading(false);
     }
   };
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (restaurantId) fetchCategories();
   }, [restaurantId]);
@@ -63,6 +64,7 @@ export default function CategoryUI({ restaurantId }: { restaurantId: string }) {
       fetchCategories();
     } catch (error) {
       // Manejo de error
+      console.error(error);
     } finally {
       setLoading(false);
     }

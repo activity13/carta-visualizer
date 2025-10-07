@@ -37,6 +37,7 @@ export default function Login() {
       }
       if (responseLogin?.ok) router.push("/backoffice");
     } catch (error) {
+      console.error(error);
       setError("An unexpected error occurred. Please try again.");
       setLoading(false);
     }

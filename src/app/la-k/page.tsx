@@ -1,30 +1,26 @@
-"use client";
-
-import React, { use, useEffect } from "react";
-import Axios from "axios";
 import LaKarta from "./components/Karta";
 
-export default function LaK() {
-  const getData = async () => {
-    try {
-      const subdomain = "la-k"; // Cambia esto según la subdama que quieras probar
-      const res = await Axios.get(
-        `${window.location.origin}/api/public/menu/${subdomain}`
-      );
-      console.log(res.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+export const dynamic = "force-static";
+export const revalidate = 60; // revalida cada minuto o al revalidateTag()
 
-  useEffect(() => {
-    getData();
-  }, []);
+export default async function LaK() {
+  const subdomain = "la-k";
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
+  const res = await fetch(`${baseUrl}/api/public/menu/${subdomain}`, {
+    next: { tags: [`menu-${subdomain}`] },
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch menu");
+  }
+
+  const data = await res.json();
 
   return (
     <div>
-      <h1>Bienvenido a La K</h1>
-      <LaKarta />
+      <h1>Bienvenido a {data.restaurant.name}</h1>
+      <LaKarta data={data} />
     </div>
   );
 }

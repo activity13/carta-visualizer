@@ -7,12 +7,13 @@ import MealSchema from "@/models/meals";
 
 export async function GET(
   req: Request,
-  { params }: { params: { subdomain: string } }
+  context: { params: Promise<{ subdomain: string }> }
 ) {
   try {
+    const { subdomain } = await context.params; //
+    const tag = `menu-${subdomain}`;
     await connectToDatabase();
-    const { subdomain } = params;
-
+    console.log("⚡ Regenerando menú desde la DB:", new Date().toISOString());
     // 1. Buscar restaurante
     const restaurant = await Restaurant.findOne({ slug: subdomain });
     if (!restaurant) {
@@ -70,8 +71,14 @@ export async function GET(
         },
         categories: categoriesWithMeals,
       },
-      { status: 200 }
+      {
+        headers: {
+          "Cache-Tag": tag, // 🔥 esto ayuda al control de caché por tag
+        },
+        status: 200,
+      }
     );
+    console.log("Menu data sent successfully.");
   } catch (error) {
     console.error("Error fetching menu:", error);
     return NextResponse.json(

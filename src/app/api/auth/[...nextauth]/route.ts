@@ -1,5 +1,6 @@
 import { connectToDatabase } from "@/lib/mongodb";
 import User from "@/models/user";
+import Restaurant from "@/models/restaurants";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
@@ -49,7 +50,18 @@ const handler = NextAuth({
       // Solo si es la primera vez (cuando el usuario inicia sesión)
       if (user) {
         token.restaurantId = user.restaurantId?.toString();
-        token.exp = Math.floor(Date.now() / 1000) + 60 * 60 * 24; // expira en 1 día
+        token.exp = Math.floor(Date.now() / 1000) + 60 * 60 * 24;
+
+        // 👇 Obtenemos el slug del restaurante
+        if (user.restaurantId) {
+          await connectToDatabase();
+          const restaurant = await Restaurant.findById(
+            user.restaurantId
+          ).select("slug");
+          if (restaurant) {
+            token.slug = restaurant.slug;
+          }
+        } // expira en 1 día
       }
 
       // Si el token ya existe y expira pronto, no lo refresques cada vez
@@ -62,6 +74,7 @@ const handler = NextAuth({
     async session({ session, token }) {
       if (session.user) {
         session.user.restaurantId = token.restaurantId;
+        session.user.slug = token.slug as string | null | undefined;
       }
       return session;
     },

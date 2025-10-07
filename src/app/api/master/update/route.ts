@@ -66,7 +66,6 @@ export async function POST(request: Request) {
     if (mealUpdated.modifiedCount === 0) {
       console.log("No se realizaron cambios en el documento.");
     }
-    console.log("Comida actualizada con éxito:", mealUpdated);
     return NextResponse.json(
       { message: "Comida actualizada con éxito" },
       { status: 200 }

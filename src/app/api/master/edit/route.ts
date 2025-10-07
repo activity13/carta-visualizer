@@ -16,7 +16,6 @@ export async function GET(req: Request) {
         { status: 404 }
       );
     }
-    console.log("Comida despachada al editor");
     return NextResponse.json(meal, { status: 200 });
   } catch (error) {
     console.error("Error interno en el servidor", error);

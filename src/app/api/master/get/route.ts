@@ -9,7 +9,6 @@ export async function GET(request: Request) {
     const id = searchParams.get("restaurantId");
     // Query de prueba mientras se implementa la lógica
     const restaurant = await Restaurant.findById(id);
-    console.log("restaurante cargado exitosamente", restaurant);
     const meals = await Meal.find({ restaurantId: restaurant?._id });
     return NextResponse.json(meals, { status: 200 });
   } catch (error) {
