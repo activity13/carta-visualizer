@@ -57,7 +57,6 @@ export async function GET(
         })),
       };
     });
-
     // 5. Respuesta final
     return NextResponse.json(
       {
@@ -66,6 +65,8 @@ export async function GET(
           name: restaurant.name,
           slug: restaurant.slug,
           description: restaurant.description,
+          direction: restaurant.direction,
+          location: restaurant.location,
           phone: restaurant.phone,
           image: restaurant.image,
         },

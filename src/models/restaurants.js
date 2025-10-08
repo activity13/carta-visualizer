@@ -20,6 +20,17 @@ const RestaurantSchema = new Schema({
     trim: true,
     maxlength: [200, "La dirección no puede exceder 200 caracteres"],
   },
+  location: {
+    type: String,
+    trim: true,
+    validate: {
+      validator: function (v) {
+        if (!v) return true; // Permite valores vacíos
+        return /^https?:\/\/.+/.test(v);
+      },
+      message: "La locación debe ser una URL válida",
+    },
+  },
   phone: {
     type: String,
     required: [true, "El teléfono del restaurante es obligatorio"],

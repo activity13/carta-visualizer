@@ -68,6 +68,7 @@ export async function POST(request: Request) {
       name: restaurant.name,
       slug: restaurant.slug,
       direction: restaurant.direction,
+      location: restaurant.location,
       phone: restaurant.phone,
       description: restaurant.description || "",
       image: restaurant.image || "",

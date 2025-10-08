@@ -1,5 +1,7 @@
+import Header from "./components/Header";
+import PlatoDelDia from "./components/PlatoDelDia";
+import MenuSelector from "./components/MenuSelector";
 import LaKarta from "./components/Karta";
-
 export const dynamic = "force-static";
 export const revalidate = 60; // revalida cada minuto o al revalidateTag()
 
@@ -19,7 +21,9 @@ export default async function LaK() {
 
   return (
     <div>
-      <h1>Bienvenido a {data.restaurant.name}</h1>
+      <Header restaurant={data.restaurant} />
+      <PlatoDelDia />
+      <MenuSelector />
       <LaKarta data={data} />
     </div>
   );

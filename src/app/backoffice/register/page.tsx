@@ -22,6 +22,7 @@ export default function SignUp() {
         name: formData.get("restaurantName"),
         slug: formData.get("restaurantSlug"),
         direction: formData.get("restaurantDirection"),
+        location: formData.get("restaurantLocation"),
         phone: formData.get("restaurantPhone"),
         description: formData.get("restaurantDescription"),
         image: formData.get("restaurantImage"),
@@ -87,6 +88,12 @@ export default function SignUp() {
             name="restaurantDirection"
             placeholder="Dirección"
             required
+            className="bg-green-950/60 border-2 border-green-900 text-white placeholder:text-green-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-700"
+          />
+          <input
+            type="text"
+            name="restaurantLocation"
+            placeholder="URL de ubicación (Google Maps, opcional)"
             className="bg-green-950/60 border-2 border-green-900 text-white placeholder:text-green-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-700"
           />
           <input
