@@ -8,9 +8,7 @@ import WhatsAppButton from "./components/WhatsappButton";
 
 export const dynamic = "force-static";
 export const revalidate = 60; // revalida cada minuto o al revalidateTag()
-
-export default async function LaK() {
-  const subdomain = "la-k";
+const subdomain = "la-k";
   const baseUrl =
     process.env.NEXT_PUBLIC_API_URL ||
     (process.env.VERCEL_URL
