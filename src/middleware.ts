@@ -5,45 +5,34 @@ import type { NextRequest } from "next/server";
 export default withAuth(
   function middleware(req: NextRequest) {
     const url = req.nextUrl;
-    const hostname = req.headers.get("host") || "";
-    const currentHost = hostname.split(":")[0];
-    const mainDomain = "carta-visualizer.vercel.app";
 
-    // --- ROOT (landing page) ---
-    if (currentHost === mainDomain || currentHost === "localhost") {
-      if (url.pathname === "/") return NextResponse.next();
+    // --- LANDING PAGE ---
+    if (url.pathname === "/") {
+      return NextResponse.next();
     }
 
     // --- BACKOFFICE ---
-    if (
-      currentHost === `app.${mainDomain}` ||
-      currentHost === "app.localhost"
-    ) {
-      // login y api auth son públicos
+    if (url.pathname.startsWith("/backoffice")) {
+      // rutas públicas dentro del backoffice
       if (
         url.pathname.startsWith("/backoffice/login") ||
         url.pathname.startsWith("/api/auth")
       ) {
         return NextResponse.next();
       }
+
+      // el resto requiere autenticación → lo maneja el callback authorized
       return NextResponse.next();
     }
 
-    // --- RESTAURANTES (público) ---
-    let subdomain = "";
-    if (currentHost.endsWith(mainDomain)) {
-      subdomain = currentHost.replace(`.${mainDomain}`, "");
-    } else if (currentHost.endsWith("localhost")) {
-      subdomain = currentHost.replace(".localhost", "");
-    }
+    // --- RESTAURANTES PÚBLICOS ---
+    // cualquier ruta como /la-k, /mi-restaurante, etc.
+    const pathParts = url.pathname.split("/").filter(Boolean);
+    const firstSegment = pathParts[0];
 
-    if (
-      subdomain &&
-      url.pathname !== `/${subdomain}` &&
-      !url.pathname.startsWith(`/${subdomain}/`)
-    ) {
-      url.pathname = `/${subdomain}${url.pathname}`;
-      return NextResponse.rewrite(url);
+    if (firstSegment && firstSegment !== "backoffice") {
+      // ruta de restaurante o sección pública
+      return NextResponse.next();
     }
 
     return NextResponse.next();
@@ -52,22 +41,18 @@ export default withAuth(
     callbacks: {
       authorized: ({ token, req }) => {
         const url = req.nextUrl;
-        const hostname = req.headers.get("host") || "";
-        const currentHost = hostname.split(":")[0];
-        const mainDomain = "carta-visualizer.vercel.app";
 
         // --- BACKOFFICE protegido ---
-        if (
-          currentHost === `app.${mainDomain}` ||
-          currentHost === "app.localhost"
-        ) {
+        if (url.pathname.startsWith("/backoffice")) {
+          // login y auth son públicos
           if (
             url.pathname.startsWith("/backoffice/login") ||
             url.pathname.startsWith("/api/auth")
           ) {
-            return true; // login y auth abiertos
+            return true;
           }
-          return !!token; // el resto sí requiere sesión
+          // el resto requiere sesión
+          return !!token;
         }
 
         // --- TODO LO DEMÁS ES PÚBLICO ---
