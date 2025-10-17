@@ -4,8 +4,15 @@
   nocompatible: true;
   preferredstrategy: "pseudoelements";
 }
-@custom-variant dark (&:is(.dark *));
 
+@custom-variant dark (&:is(.dark *));
+@theme {
+  --breakpoint-xs: 20rem;
+  --breakpoint-ss: 28.75rem;
+  --breakpoint-sm: 40rem;
+  --breakpoint-2xl: 100rem;
+  --breakpoint-3xl: 120rem;
+}
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -44,6 +51,7 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --font-avenir: var(--font-avenir);
 }
 
 :root {
@@ -121,5 +129,6 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-avenir), sans-serif;
   }
 }

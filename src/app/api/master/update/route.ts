@@ -24,7 +24,7 @@ export async function POST(request: Request) {
           images: [],
 
           // Ingredientes y alérgenos
-          ingredients: [""],
+          ingredients: formData?.ingredients || [],
           allergens: [],
           dietaryTags: [],
 

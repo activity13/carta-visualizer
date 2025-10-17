@@ -40,6 +40,7 @@ export async function GET(
       const catMeals = meals.filter(
         (meal) => meal.categoryId.toString() === cat._id.toString()
       );
+
       return {
         id: cat._id,
         name: cat.name,
@@ -54,6 +55,7 @@ export async function GET(
           images: m.images,
           tags: m.dietaryTags,
           featured: m.display.isFeatured,
+          ingredients: [m.ingredients],
         })),
       };
     });
@@ -79,7 +81,6 @@ export async function GET(
         status: 200,
       }
     );
-    console.log("Menu data sent successfully.");
   } catch (error) {
     console.error("Error fetching menu:", error);
     return NextResponse.json(

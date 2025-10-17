@@ -8,9 +8,8 @@ export default function NotFound() {
           Acceso Denegado
         </h1>
         <p className="text-lg text-gray-200 mb-8 text-center font-mono">
-          Esta página es parte de la red secreta de restaurantes.
+          Esta página forma parte de la red digital de restaurantes viw.
           <br />
-          No tienes acceso o la ruta no existe.
         </p>
         <Link href="/" passHref>
           <button

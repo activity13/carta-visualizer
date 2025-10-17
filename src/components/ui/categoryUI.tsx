@@ -179,7 +179,7 @@ export default function CategoryUI({ restaurantId }: { restaurantId: string }) {
               className="flex flex-col md:flex-row items-start md:items-center justify-between bg-green-900/80 border border-green-700 rounded-xl px-4 py-3 text-white font-mono"
             >
               {editingId === cat._id ? (
-                <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-2">
+                <div className="flex-1 grid grid-cols-1 md:grid-cols-1 gap-2">
                   <input
                     type="text"
                     value={editForm.name || ""}
@@ -207,8 +207,7 @@ export default function CategoryUI({ restaurantId }: { restaurantId: string }) {
                     }
                     className="bg-green-950 border border-green-700 text-white rounded px-2 py-1"
                   />
-                  <input
-                    type="text"
+                  <textarea
                     value={editForm.description || ""}
                     onChange={(e) =>
                       setEditForm((f) => ({
@@ -216,7 +215,7 @@ export default function CategoryUI({ restaurantId }: { restaurantId: string }) {
                         description: e.target.value,
                       }))
                     }
-                    className="bg-green-950 border border-green-700 text-white rounded px-2 py-1"
+                    className="bg-green-950 border border-green-700 text-white rounded px-2 py-1 md:h-24 w-full resize-none overflow-y-auto leading-tight"
                   />
                 </div>
               ) : (
@@ -229,7 +228,7 @@ export default function CategoryUI({ restaurantId }: { restaurantId: string }) {
                   )}
                 </div>
               )}
-              <div className="flex gap-2 mt-2 md:mt-0">
+              <div className="flex gap-2 mt-2 px-4 md:mt-0">
                 {editingId === cat._id ? (
                   <button
                     onClick={() => handleSaveEdit(cat._id)}

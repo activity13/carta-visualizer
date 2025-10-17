@@ -1,15 +1,15 @@
 import mongoose from "mongoose";
-const { MONGODB_LOCAL } = process.env;
+const { MONGODB_URI } = process.env;
 export const connectToDatabase = async () => {
   if (mongoose.connection.readyState >= 1) {
     return;
   }
 
-  if (!MONGODB_LOCAL) {
+  if (!MONGODB_URI) {
     throw new Error("Please define the MONGODB_LOCAL environment variable");
   }
   try {
-    await mongoose.connect(MONGODB_LOCAL);
+    await mongoose.connect(MONGODB_URI);
     console.log("Connected to MongoDB");
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
