@@ -54,7 +54,7 @@ export default withAuth(
         const url = req.nextUrl;
         const hostname = req.headers.get("host") || "";
         const currentHost = hostname.split(":")[0];
-        const mainDomain = "viwcarta.com";
+        const mainDomain = "carta-visualizer.vercel.app";
 
         // --- BACKOFFICE protegido ---
         if (
