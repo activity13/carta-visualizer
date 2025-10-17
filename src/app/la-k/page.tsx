@@ -6,9 +6,13 @@ import WhatsAppButton from "./components/WhatsappButton";
 //   name: string;
 // }
 
-export const dynamic = "force-dynamic";
+export const dynamic = "force-static";
 export const revalidate = 60; // revalida cada minuto o al revalidateTag()
-const subdomain = "la-k";
+
+export default async function LaK() {
+  const subdomain = "la-k";
+
+  // Usa el dominio correcto según el entorno
   const baseUrl =
     process.env.NEXT_PUBLIC_API_URL ||
     (process.env.VERCEL_URL
