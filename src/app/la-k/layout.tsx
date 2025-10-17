@@ -1,7 +1,7 @@
 import React from "react";
 import localFont from "next/font/local";
 import type { Metadata } from "next";
-export const avenir = localFont({
+const avenir = localFont({
   src: [
     {
       path: "../../../public/la-k/fonts/Avenir Regular.ttf",

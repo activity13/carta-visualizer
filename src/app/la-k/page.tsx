@@ -1,7 +1,10 @@
 import Header from "./components/Header";
-import PlatoDelDia from "./components/PlatoDelDia";
 import LaKarta from "./components/Karta";
 import WhatsAppButton from "./components/WhatsappButton";
+
+// interface catProps {
+//   name: string;
+// }
 
 export const dynamic = "force-static";
 export const revalidate = 60; // revalida cada minuto o al revalidateTag()
@@ -19,15 +22,14 @@ export default async function LaK() {
   }
 
   const data = await res.json();
-  console.log("🚀 ~ page.tsx:21 ~ LaK ~ data:", data);
 
   // Encontramos la categoría "Plato del día"
-  const platoDelDiaCategory = data?.categories?.find(
-    (cat: any) => cat.name.toLowerCase() === "plato del día"
-  );
+  // const platoDelDiaCategory = data?.categories?.find(
+  //   (cat: catProps) => cat.name.toLowerCase() === "plato del día"
+  // );
 
   // Aseguramos que tenga al menos un plato
-  const platoDelDia = platoDelDiaCategory?.meals?.[0];
+  // const platoDelDia = platoDelDiaCategory?.meals?.[0];
   return (
     <div>
       <Header restaurant={data.restaurant} />

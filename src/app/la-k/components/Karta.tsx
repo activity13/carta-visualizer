@@ -165,7 +165,7 @@ export default function LaKarta({ data }: KartaProps) {
                 <>
                   {/* Columna izquierda */}
                   <div className="flex flex-col space-y-8">
-                    {left.map((category, categoryIndex) => (
+                    {left.map((category) => (
                       <div
                         key={category.id}
                         id={category.name.toLowerCase().replace(/\s+/g, "-")}
@@ -221,7 +221,7 @@ export default function LaKarta({ data }: KartaProps) {
                   </div>
                   {/* Columna derecha */}
                   <div className="flex flex-col space-y-8">
-                    {right.map((category, categoryIndex) => (
+                    {right.map((category) => (
                       <div
                         key={category.id}
                         id={category.name.toLowerCase().replace(/\s+/g, "-")}
