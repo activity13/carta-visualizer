@@ -11,7 +11,11 @@ export const revalidate = 60; // revalida cada minuto o al revalidateTag()
 
 export default async function LaK() {
   const subdomain = "la-k";
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_API_URL ||
+    (process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000");
 
   const res = await fetch(`${baseUrl}/api/public/menu/${subdomain}`, {
     next: { tags: [`menu-${subdomain}`] },
