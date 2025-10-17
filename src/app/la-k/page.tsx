@@ -6,7 +6,7 @@ import WhatsAppButton from "./components/WhatsappButton";
 //   name: string;
 // }
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 export const revalidate = 60; // revalida cada minuto o al revalidateTag()
 const subdomain = "la-k";
   const baseUrl =
