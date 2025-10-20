@@ -35,8 +35,8 @@ const CategorySchema = new Schema(
     },
     order: {
       type: Number,
-      required: true,
-      default: 0,
+      required: false,
+      default: 999,
       index: true,
     },
     isActive: {
@@ -57,6 +57,11 @@ const CategorySchema = new Schema(
   {
     timestamps: true,
   }
+);
+
+CategorySchema.index(
+  { restaurantId: 1, code: 1, slug: 1, order: 1 },
+  { unique: true }
 );
 
 const Categories = models.Categories || model("Categories", CategorySchema);

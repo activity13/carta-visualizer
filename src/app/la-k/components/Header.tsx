@@ -22,8 +22,8 @@ export default function Header({ restaurant }: HeaderProps) {
 
   return (
     <>
-      {/* Espacio reservado arriba para evitar que la carta quede detrás del header */}
-      <div className={`${scrolled ? "h-20" : "h-36 sm:h-40"}`} />
+      {/* Espacio reservado para evitar solapamiento */}
+      <div className={`${scrolled ? "h-20" : "h-10 sm:h-40"}`} />
 
       <header
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-500
@@ -32,15 +32,15 @@ export default function Header({ restaurant }: HeaderProps) {
       >
         <div
           className={`max-w-5xl mx-auto flex items-center transition-all duration-500 px-4
-            ${scrolled ? "justify-start" : "justify-center"}
+            ${scrolled ? "justify-start" : "justify-start sm:justify-center"}
           `}
         >
           <div
             className={`relative overflow-hidden rounded-full bg-white ring-1 ring-gray-200 shadow-md transition-all duration-500
               ${
                 scrolled
-                  ? "w-16 h-16 sm:w-20 sm:h-20 translate-y-0"
-                  : "w-28 h-28 sm:w-36 sm:h-36 translate-y-8"
+                  ? "w-14 h-14 sm:w-16 sm:h-16 translate-y-0"
+                  : "w-20 h-20 sm:w-28 sm:h-28 sm:translate-y-8"
               }
             `}
           >

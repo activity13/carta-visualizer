@@ -27,11 +27,12 @@ interface KartaData {
 
 interface KartaProps {
   data: KartaData;
+  restaurant: { phone: string };
 }
 
 type MenuType = "principal" | "pizzas";
 
-export default function LaKarta({ data }: KartaProps) {
+export default function LaKarta({ data, restaurant }: KartaProps) {
   const [activeMenu, setActiveMenu] = useState<MenuType>("principal");
 
   const filteredCategories = data.categories.filter((category) => {
@@ -46,7 +47,7 @@ export default function LaKarta({ data }: KartaProps) {
   const right = filteredCategories.slice(half);
 
   return (
-    <div className="w-full min-h-screen">
+    <div className="w-full min-h-3.5 md:min-h-screen">
       {/* Grupo de botones que te permiten desplazarte comodamente por las categorias en la versión para móvil */}
       <div className="fixed bottom-0 left-0 w-full z-50 border-t border-black bg-neutral-50 shadow-inner overflow-x-auto lg:hidden">
         <div className="flex gap-3 px-4 py-3 min-w-full overflow-x-auto scrollbar-none">
@@ -280,7 +281,7 @@ export default function LaKarta({ data }: KartaProps) {
         </div>
       </DecorativeFrame>
       <FloatingActionGroup
-        restaurant={{ phone: "123 456 7890" }}
+        restaurant={restaurant}
         activeMenu={activeMenu}
         onChange={setActiveMenu}
       />

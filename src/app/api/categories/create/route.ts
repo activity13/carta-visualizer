@@ -6,10 +6,10 @@ export async function POST(request: Request) {
   try {
     await connectToDatabase();
     const body = await request.json();
-    const { name, code, slug, description, restaurantId } = body;
+    const { name, code, slug, description, restaurantId, order } = body;
 
     // Validación básica
-    if (!name || !code || !slug || !restaurantId) {
+    if (!name || !code || !slug || !restaurantId || !order) {
       return NextResponse.json(
         { error: "Faltan datos obligatorios" },
         { status: 400 }
@@ -18,14 +18,14 @@ export async function POST(request: Request) {
 
     // Verifica que el código y el slug sean únicos para el restaurante
     const exists = await CategorySchema.findOne({
-      $or: [{ code }, { slug }],
+      $or: [{ code }, { slug }, { order }],
       restaurantId,
     });
     if (exists) {
       return NextResponse.json(
         {
           error:
-            "Ya existe una categoría con ese código o slug en el restaurante",
+            "Ya existe una categoría con ese código, slug u orden en el restaurante",
         },
         { status: 400 }
       );
@@ -35,6 +35,7 @@ export async function POST(request: Request) {
       name,
       code,
       slug,
+      order,
       description: description || "",
       restaurantId,
       isActive: true,

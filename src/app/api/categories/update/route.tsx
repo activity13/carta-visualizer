@@ -6,7 +6,7 @@ export async function PUT(request: Request) {
   try {
     await connectToDatabase();
     const body = await request.json();
-    const { id, name, code, slug, description, restaurantId } = body;
+    const { id, name, code, slug, description, restaurantId, order } = body;
 
     if (!id || !restaurantId) {
       return NextResponse.json(
@@ -19,24 +19,25 @@ export async function PUT(request: Request) {
     const exists = await CategorySchema.findOne({
       _id: { $ne: id },
       restaurantId,
-      $or: [{ code }, { slug }],
+      $or: [{ code }, { slug }, { order }],
     });
     if (exists) {
       return NextResponse.json(
         {
           error:
-            "Ya existe una categoría con ese código o slug en el restaurante",
+            "Ya existe una categoría con ese código, slug u orden en el restaurante",
         },
         { status: 400 }
       );
     }
-
+    console.log("🚀 ~ route.tsx:34 ~ PUT ~ order:", order);
     const updated = await CategorySchema.findOneAndUpdate(
       { _id: id, restaurantId },
       {
         name,
         code,
         slug,
+        order,
         description: description || "",
       },
       { new: true }

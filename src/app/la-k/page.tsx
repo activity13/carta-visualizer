@@ -46,7 +46,7 @@ export default async function LaK() {
           ingredients={platoDelDia.ingredients}
         />
       )} */}
-      <LaKarta data={data} />
+      <LaKarta data={data} restaurant={data.restaurant} />
     </div>
   );
 }

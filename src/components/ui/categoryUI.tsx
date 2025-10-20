@@ -11,6 +11,7 @@ interface Category {
   description?: string;
   restaurantId: string;
   isActive?: boolean;
+  order?: number;
 }
 
 export default function CategoryUI({ restaurantId }: { restaurantId: string }) {
@@ -21,6 +22,7 @@ export default function CategoryUI({ restaurantId }: { restaurantId: string }) {
     code: "",
     slug: "",
     description: "",
+    order: 0,
   });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<Partial<Category>>({});
@@ -60,6 +62,7 @@ export default function CategoryUI({ restaurantId }: { restaurantId: string }) {
         code: "",
         slug: "",
         description: "",
+        order: 0,
       });
       fetchCategories();
     } catch (error) {
@@ -94,6 +97,7 @@ export default function CategoryUI({ restaurantId }: { restaurantId: string }) {
       code: cat.code,
       slug: cat.slug,
       description: cat.description,
+      order: cat.order,
     });
   };
 
@@ -133,7 +137,7 @@ export default function CategoryUI({ restaurantId }: { restaurantId: string }) {
               className="bg-green-900/80 border border-green-700 text-white placeholder:text-green-300 rounded-xl px-4 py-2 font-mono"
             />
             <input
-              type="number"
+              type="text"
               placeholder="Código"
               value={form.code}
               onChange={(e) => setForm((f) => ({ ...f, code: e.target.value }))}
@@ -142,9 +146,19 @@ export default function CategoryUI({ restaurantId }: { restaurantId: string }) {
             />
             <input
               type="text"
-              placeholder="Slug"
+              placeholder="ejemplo-de-slug-aqui"
               value={form.slug}
               onChange={(e) => setForm((f) => ({ ...f, slug: e.target.value }))}
+              required
+              className="bg-green-900/80 border border-green-700 text-white placeholder:text-green-300 rounded-xl px-4 py-2 font-mono"
+            />
+            <input
+              type="number"
+              placeholder="Orden"
+              value={form.order}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, order: Number(e.target.value) }))
+              }
               required
               className="bg-green-900/80 border border-green-700 text-white placeholder:text-green-300 rounded-xl px-4 py-2 font-mono"
             />
@@ -190,6 +204,7 @@ export default function CategoryUI({ restaurantId }: { restaurantId: string }) {
                   />
                   <input
                     type="number"
+                    id="order"
                     value={editForm.code?.toString() || ""}
                     onChange={(e) =>
                       setEditForm((f) => ({
@@ -204,6 +219,17 @@ export default function CategoryUI({ restaurantId }: { restaurantId: string }) {
                     value={editForm.slug || ""}
                     onChange={(e) =>
                       setEditForm((f) => ({ ...f, slug: e.target.value }))
+                    }
+                    className="bg-green-950 border border-green-700 text-white rounded px-2 py-1"
+                  />
+                  <input
+                    type="text"
+                    value={editForm.order || 0}
+                    onChange={(e) =>
+                      setEditForm((f) => ({
+                        ...f,
+                        order: Number(e.target.value),
+                      }))
                     }
                     className="bg-green-950 border border-green-700 text-white rounded px-2 py-1"
                   />
@@ -223,6 +249,7 @@ export default function CategoryUI({ restaurantId }: { restaurantId: string }) {
                   <span className="font-bold">{cat.name}</span>
                   <span className="text-green-300">Código: {cat.code}</span>
                   <span className="text-green-300">Slug: {cat.slug}</span>
+                  <span className="text-green-300">Orden: {cat.order}</span>
                   {cat.description && (
                     <span className="text-green-300">{cat.description}</span>
                   )}

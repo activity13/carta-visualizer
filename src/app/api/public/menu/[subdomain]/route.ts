@@ -27,7 +27,7 @@ export async function GET(
     const categories = await CategorySchema.find({
       restaurantId: restaurant._id,
       isActive: true,
-    });
+    }).sort({ order: 1 });
 
     // 3. Buscar platos del restaurante
     const meals = await MealSchema.find({
