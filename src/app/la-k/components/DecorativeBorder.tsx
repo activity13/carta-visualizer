@@ -4,28 +4,24 @@ import { ReactNode } from "react";
 interface DecorativeFrameProps {
   children: ReactNode;
 }
+
 export default function DecorativeFrame({ children }: DecorativeFrameProps) {
   return (
-    <div className="relative w-full h-screen flex items-center justify-center p-4 overflow-hidden">
-      {/* Marco SVG - Fijo */}
-      <Image
-        src="/la-k/images/la-k-marco.svg"
-        alt="Marco decorativo"
-        fill
-        className="object-contain pointer-events-none"
-        priority
-      />
+    <div className="relative w-full max-w-8xl mx-auto aspect-[3/4] md:aspect-[4/3] flex items-center justify-center overflow-hidden">
+      {/* Marco SVG: mantiene proporción */}
+      <div className="absolute inset-0">
+        <Image
+          src="/la-k/images/la-k-marco.svg"
+          alt="Marco decorativo"
+          fill
+          className="object-contain"
+          priority
+        />
+      </div>
 
-      {/* Contenedor con scroll interno - Respeta el marco */}
-      <div className="relative z-10 w-full h-full max-w-[min(90vw,800px)] max-h-[85vh] flex items-center justify-center">
-        <div
-          className="w-[85%] h-[75%] md:w-[70%] md:h-[85%] overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100"
-          style={{
-            maxHeight: "calc(85vh - 4rem)",
-          }}
-        >
-          {children}
-        </div>
+      {/* Contenido interno */}
+      <div className="relative z-10 w-[80%] md:w-[45%] h-[90%] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent">
+        {children}
       </div>
     </div>
   );

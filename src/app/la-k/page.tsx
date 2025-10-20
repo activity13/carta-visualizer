@@ -1,6 +1,5 @@
 import Header from "./components/Header";
 import LaKarta from "./components/Karta";
-import WhatsAppButton from "./components/WhatsappButton";
 
 // interface catProps {
 //   name: string;
@@ -48,7 +47,6 @@ export default async function LaK() {
         />
       )} */}
       <LaKarta data={data} />
-      <WhatsAppButton restaurant={data.restaurant} />
     </div>
   );
 }

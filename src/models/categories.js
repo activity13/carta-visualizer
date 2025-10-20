@@ -33,6 +33,12 @@ const CategorySchema = new Schema(
       ref: "Restaurant",
       required: true,
     },
+    order: {
+      type: Number,
+      required: true,
+      default: 0,
+      index: true,
+    },
     isActive: {
       type: Boolean,
       default: true,

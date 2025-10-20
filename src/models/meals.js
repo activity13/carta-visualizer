@@ -202,7 +202,6 @@ const MealSchema = new Schema(
       type: Number,
       min: 0,
     }, // precio "tachado" para ofertas
-
     // Medios
     images: [
       {

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Pizza, Utensils } from "lucide-react";
 import DecorativeFrame from "./DecorativeBorder";
-import MenuSwitch from "./MenuSwitch"; // 👈 Importamos el nuevo componente
+import FloatingActionGroup from "./FloatingActionGroup";
 import Image from "next/image";
 
 interface Meal {
@@ -47,10 +47,8 @@ export default function LaKarta({ data }: KartaProps) {
 
   return (
     <div className="w-full min-h-screen">
-      {/* ✅ Componente separado */}
-      <MenuSwitch activeMenu={activeMenu} onChange={setActiveMenu} />
       {/* Grupo de botones que te permiten desplazarte comodamente por las categorias en la versión para móvil */}
-      <div className="fixed bottom-0 left-0 w-full z-50 border-t border-black bg-neutral-50 shadow-inner overflow-x-auto md:hidden">
+      <div className="fixed bottom-0 left-0 w-full z-50 border-t border-black bg-neutral-50 shadow-inner overflow-x-auto lg:hidden">
         <div className="flex gap-3 px-4 py-3 min-w-full overflow-x-auto scrollbar-none">
           {filteredCategories.map((category) => (
             <button
@@ -72,7 +70,7 @@ export default function LaKarta({ data }: KartaProps) {
       </div>
       <DecorativeFrame>
         {/* Contenedor del menú dentro del marco */}
-        <div className="w-full max-w-full md:max-w-4xl mx-auto p-4 md:p-6 overflow-x-hidden">
+        <div className="w-full mx-auto p-4 md:p-6 overflow-x-hidden">
           {filteredCategories.length === 0 ? (
             <div className="text-center py-16">
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4">
@@ -90,8 +88,8 @@ export default function LaKarta({ data }: KartaProps) {
             <div
               className={`space-y-8 -order-1 flex-1 ${
                 activeMenu === "pizzas"
-                  ? "grid grid-cols-1 md:grid-cols-1 gap-4"
-                  : "grid grid-cols-1 md:grid-cols-2 gap-2"
+                  ? "grid grid-cols-1 xl:grid-cols-1 gap-4"
+                  : "grid grid-cols-1 xl:grid-cols-2 gap-2"
               } `}
             >
               {activeMenu === "pizzas" ? (
@@ -281,6 +279,11 @@ export default function LaKarta({ data }: KartaProps) {
           )}
         </div>
       </DecorativeFrame>
+      <FloatingActionGroup
+        restaurant={{ phone: "123 456 7890" }}
+        activeMenu={activeMenu}
+        onChange={setActiveMenu}
+      />
     </div>
   );
 }
