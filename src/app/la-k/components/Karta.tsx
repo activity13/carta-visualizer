@@ -47,7 +47,7 @@ export default function LaKarta({ data, restaurant }: KartaProps) {
   const right = filteredCategories.slice(half);
 
   return (
-    <div className="w-full min-h-3.5 md:min-h-screen">
+    <div className="w-full min-h-3.5  md:min-h-screen">
       {/* Grupo de botones que te permiten desplazarte comodamente por las categorias en la versión para móvil */}
       <div className="fixed bottom-0 left-0 w-full z-50 border-t border-black bg-neutral-50 shadow-inner overflow-x-auto lg:hidden">
         <div className="flex gap-3 px-4 py-3 min-w-full overflow-x-auto scrollbar-none">

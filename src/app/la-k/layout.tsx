@@ -31,7 +31,7 @@ export default function DashboardLayout({
 }) {
   return (
     <div
-      className={`${avenir.variable} min-h-screen bg-white text-black font-avenir`}
+      className={`${avenir.variable} max-h-screen bg-white text-black font-avenir`}
     >
       {children}
     </div>
