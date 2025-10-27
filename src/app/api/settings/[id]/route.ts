@@ -5,10 +5,10 @@ import Restaurant from "@/models/restaurants";
 
 export async function GET(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   await connectToDatabase();
-  const { id } = context.params;
+  const { id } = await params;
   try {
     console.log("🚀 ~ route.ts:13 ~ GET ~ id:", id);
 
