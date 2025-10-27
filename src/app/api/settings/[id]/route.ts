@@ -1,15 +1,15 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
 
 import Restaurant from "@/models/restaurants";
 
 export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: { params: { id: string } }
 ) {
+  await connectToDatabase();
+  const { id } = context.params;
   try {
-    await connectToDatabase();
-    const { id } = await params;
     console.log("🚀 ~ route.ts:13 ~ GET ~ id:", id);
 
     const restaurant = await Restaurant.findById(id);
