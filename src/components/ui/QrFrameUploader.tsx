@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,15 +24,6 @@ export default function QRFrameUploader({
 }: Props) {
   const [preview, setPreview] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-
-  const ratioText = useMemo(() => {
-    // minRatio=0.5 => 1:2 | maxRatio=2 => 2:1
-    const toText = (r: number) =>
-      r >= 1
-        ? `${Math.round(r * 10) / 10}:1`
-        : `1:${Math.round((1 / r) * 10) / 10}`;
-    return `${toText(minRatio)} a ${toText(maxRatio)}`;
-  }, [minRatio, maxRatio]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null;

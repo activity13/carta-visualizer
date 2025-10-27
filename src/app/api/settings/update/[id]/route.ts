@@ -75,7 +75,7 @@ export async function PUT(
       message: "Tu negocio ha sido actualizado correctamente.",
       business: updatedBusiness,
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error("🚨 Error updating business:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

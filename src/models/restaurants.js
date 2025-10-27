@@ -1,4 +1,3 @@
-import { QrCode } from "lucide-react";
 import { Schema, model, models } from "mongoose";
 
 const RestaurantSchema = new Schema({
