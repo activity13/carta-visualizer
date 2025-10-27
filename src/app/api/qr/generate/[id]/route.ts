@@ -50,7 +50,7 @@ export async function GET(
     });
 
     // 2️⃣ Combinar con el marco usando Sharp
-    const finalImage = await sharp(framePath)
+    await sharp(framePath)
       .composite([{ input: qrBuffer, gravity: "center" }]) // centra el QR sobre el marco
       .toFile(outputPath);
 
