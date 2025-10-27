@@ -6,7 +6,7 @@ import path from "path";
 
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectToDatabase();
@@ -76,7 +76,9 @@ export async function PUT(
       business: updatedBusiness,
     });
   } catch (error) {
-    console.error("🚨 Error updating business:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("🚨 Error updsating business:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "An unknown error occurred";
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
