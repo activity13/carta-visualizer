@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import QRCode from "qrcode";
 import sharp from "sharp";
 import path from "path";
@@ -8,18 +8,16 @@ import Restaurant from "@/models/restaurants";
 
 export const runtime = "nodejs";
 
-export async function GET(req: Request) {
+export async function GET(
+  request: NextRequest,
+
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     await connectToDatabase();
-
-    // Extraer el id desde la URL
-    const url = new URL(req.url);
-    const parts = url.pathname.split("/").filter(Boolean);
-    const id = parts[parts.length - 1];
-    if (!id) {
-      return NextResponse.json({ error: "ID inválido" }, { status: 400 });
-    }
+    const { id } = await params;
     const business = await Restaurant.findById(id);
+
     if (!business) {
       return NextResponse.json(
         { error: "Negocio no encontrado" },
