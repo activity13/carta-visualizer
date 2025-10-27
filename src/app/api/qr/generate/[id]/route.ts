@@ -6,13 +6,10 @@ import fs from "fs";
 import { connectToDatabase } from "@/lib/mongodb";
 import Restaurant from "@/models/restaurants";
 
-export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: Request, context: { params: { id: string } }) {
   try {
     await connectToDatabase();
-    const { id } = await params;
+    const { id } = await context.params;
     const business = await Restaurant.findById(id);
     if (!business) {
       return NextResponse.json(
