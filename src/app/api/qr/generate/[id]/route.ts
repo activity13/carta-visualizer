@@ -8,12 +8,12 @@ import Restaurant from "@/models/restaurants";
 
 export async function GET(
   _request: Request,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
   try {
     await connectToDatabase();
 
-    const { id } = await context.params;
+    const { id } = params;
     const business = await Restaurant.findById(id);
     if (!business) {
       return NextResponse.json(
