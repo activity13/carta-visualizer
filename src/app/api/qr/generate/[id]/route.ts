@@ -6,14 +6,19 @@ import fs from "fs";
 import { connectToDatabase } from "@/lib/mongodb";
 import Restaurant from "@/models/restaurants";
 
-export async function GET(
-  _request: Request,
-  { params }: { params: { id: string } }
-) {
+export const runtime = "nodejs";
+
+export async function GET(req: Request) {
   try {
     await connectToDatabase();
 
-    const { id } = params;
+    // Extraer el id desde la URL
+    const url = new URL(req.url);
+    const parts = url.pathname.split("/").filter(Boolean);
+    const id = parts[parts.length - 1];
+    if (!id) {
+      return NextResponse.json({ error: "ID inválido" }, { status: 400 });
+    }
     const business = await Restaurant.findById(id);
     if (!business) {
       return NextResponse.json(
