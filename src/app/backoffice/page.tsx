@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 export default function DashboardPage() {
   const router = useRouter();
   return (
-    <>
+    <div className="min-h-screen bg-card">
       <section className="flex flex-col items-center  gap-6 p-4">
         <h1 className="text-4xl font-bold">Bienvenido</h1>
 
@@ -31,6 +31,6 @@ export default function DashboardPage() {
 
         <Master />
       </section>
-    </>
+    </div>
   );
 }

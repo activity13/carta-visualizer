@@ -1,3 +1,4 @@
+import { QrCode } from "lucide-react";
 import { Schema, model, models } from "mongoose";
 
 const RestaurantSchema = new Schema({
@@ -5,6 +6,7 @@ const RestaurantSchema = new Schema({
     type: String,
     required: [true, "El nombre del restaurante es obligatorio"],
     trim: true,
+    unique: true,
     maxlength: [100, "El nombre no puede exceder 100 caracteres"],
   },
   slug: {
@@ -44,6 +46,16 @@ const RestaurantSchema = new Schema({
     maxlength: [500, "La descripción no puede exceder 500 caracteres"],
   },
   image: {
+    type: String,
+    required: false,
+    trim: true,
+  },
+  frameQR: {
+    type: String,
+    required: false,
+    trim: true,
+  },
+  QrCode: {
     type: String,
     required: false,
     trim: true,

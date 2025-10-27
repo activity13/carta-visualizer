@@ -60,6 +60,7 @@ const handler = NextAuth({
           ).select("slug");
           if (restaurant) {
             token.slug = restaurant.slug;
+            token.role = user.role;
           }
         } // expira en 1 día
       }
@@ -75,6 +76,7 @@ const handler = NextAuth({
       if (session.user) {
         session.user.restaurantId = token.restaurantId;
         session.user.slug = token.slug as string | null | undefined;
+        session.user.role = token.role as string | null | undefined;
       }
       return session;
     },

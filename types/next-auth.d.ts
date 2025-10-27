@@ -9,12 +9,14 @@ declare module "next-auth" {
       image?: string | null;
       restaurantId?: string;
       slug?: string | null;
+      role?: string | null;
     };
   }
 
   interface User extends DefaultUser {
     id: string;
     restaurantId?: string;
+    role?: string | null;
   }
 }
 
