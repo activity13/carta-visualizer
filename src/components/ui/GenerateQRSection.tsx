@@ -37,8 +37,10 @@ export default function GenerateQRSection({
 
       setQrUrl(data.qrPath);
       setStatus(data.message);
-    } catch (err: any) {
-      setStatus(`❌ ${err.message}`);
+    } catch (err) {
+      setStatus(
+        `❌ ${err instanceof Error ? err.message : "Error desconocido"}`
+      );
     } finally {
       setLoading(false);
     }
@@ -64,8 +66,10 @@ export default function GenerateQRSection({
       window.URL.revokeObjectURL(url);
 
       setStatus("✅ QR descargado correctamente");
-    } catch (err: any) {
-      setStatus(`❌ ${err.message}`);
+    } catch (err) {
+      setStatus(
+        `❌ ${err instanceof Error ? err.message : "Error desconocido"}`
+      );
     }
   };
   const shownImage = qrUrl || existingImageUrl || null;
