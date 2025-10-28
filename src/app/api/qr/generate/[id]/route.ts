@@ -6,18 +6,14 @@ import fs from "fs";
 import { connectToDatabase } from "@/lib/mongodb";
 import Restaurant from "@/models/restaurants";
 
-export const runtime = "nodejs";
-
 export async function GET(
   request: NextRequest,
-
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   try {
     await connectToDatabase();
-    const { id } = await params;
     const business = await Restaurant.findById(id);
-
     if (!business) {
       return NextResponse.json(
         { error: "Negocio no encontrado" },
@@ -47,7 +43,7 @@ export async function GET(
     if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
 
     // 1️⃣ Generar QR temporal (por ejemplo, con la URL del menú del negocio)
-    const qrData = `https://192.168.1.122:3000/${business.slug}`;
+    const qrData = `https://viw-carta.vercel.app/${business.slug}`;
     const qrBuffer = await QRCode.toBuffer(qrData, {
       width: 600,
       color: { dark: "#000000", light: "#0000" }, // fondo transparente

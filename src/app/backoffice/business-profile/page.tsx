@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import QRFrameUploader from "@/components/ui/QrFrameUploader";
 import LogoImageUploader from "@/components/ui/LogoImageUploader";
-
+import GenerateQRSection from "@/components/ui/GenerateQRSection";
 interface Business {
   _id: string;
   name: string;
@@ -45,7 +45,6 @@ export default function BusinessProfileForm() {
         const { data } = await axios.get(
           `/api/settings/${session.user.restaurantId}`
         );
-        console.log("🚀 ~ page.tsx:41 ~ fetchBusiness ~ data:", data);
         setBusiness(data);
         setFormData(data);
       } catch (error) {
@@ -62,7 +61,6 @@ export default function BusinessProfileForm() {
 
   const handleSave = async () => {
     try {
-      console.log("🚀 ~ page.tsx:67 ~ handleSave ~ formData:", formData);
       const res = await axios.put(
         `/api/settings/update/${business?._id}`,
         formData,
@@ -70,7 +68,6 @@ export default function BusinessProfileForm() {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      console.log("🚀 ~ page.tsx:73 ~ handleSave ~ res:", res);
       setBusiness(res.data.business);
       setIsEditing(false);
       if (res.status === 200) {
@@ -155,7 +152,7 @@ export default function BusinessProfileForm() {
                 : null
             }
             onFileSelect={(file) =>
-              setFormData({ ...formData, imageFile: file })
+              setFormData({ ...formData, frameQRFile: file })
             }
           />
 
@@ -190,6 +187,13 @@ export default function BusinessProfileForm() {
               </>
             )}
           </div>
+          <GenerateQRSection
+            businessId={business._id}
+            businessSlug={business.slug}
+            existingImageUrl={
+              business.image ? `/${business.slug}/qr/${business.QrCode}` : null
+            }
+          />
         </CardContent>
       </Card>
     </div>
