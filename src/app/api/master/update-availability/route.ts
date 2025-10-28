@@ -15,7 +15,7 @@ export async function PUT(req: Request) {
   try {
     const meal = await Meal.findByIdAndUpdate(
       mealId,
-      { "availability.isAvailable": isAvailable },
+      { "display.showInMenu": isAvailable },
       { new: true }
     );
 

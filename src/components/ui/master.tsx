@@ -20,8 +20,8 @@ interface Meal {
   basePrice: string;
   _id: ObjectId;
   restaurantId: ObjectId;
-  availability: {
-    isAvailable: boolean;
+  display: {
+    showInMenu: boolean;
   };
 }
 
@@ -43,8 +43,8 @@ function filterMeals(
       filters.available === "all"
         ? true
         : filters.available === "yes"
-        ? meal.availability.isAvailable
-        : !meal.availability.isAvailable;
+        ? meal.display.showInMenu
+        : !meal.display.showInMenu;
     const price = parseFloat(meal.basePrice);
     const min = filters.minPrice ? parseFloat(filters.minPrice) : -Infinity;
     const max = filters.maxPrice ? parseFloat(filters.maxPrice) : Infinity;
@@ -265,11 +265,11 @@ export default function Master() {
                         />
                       ) : (
                         <Switch
-                          checked={meal.availability?.isAvailable}
+                          checked={meal.display?.showInMenu}
                           onCheckedChange={() =>
                             handleToggleAvailable(
                               meal._id,
-                              meal.availability?.isAvailable
+                              meal.display?.showInMenu
                             )
                           }
                           className="data-[state=checked]:bg-green-600 data-[state=unchecked]:bg-green-950"
