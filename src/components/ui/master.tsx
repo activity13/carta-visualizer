@@ -204,14 +204,19 @@ export default function Master() {
               min={0}
             />
           </div>
-          <Table>
+          <Table className="table-fixed">
+            <colgroup>
+              <col className="w-[65%]" /> {/* Nombre */}
+              <col className="w-[15%]" /> {/* Precio */}
+              <col className="w-[20%]" /> {/* Activo */}
+            </colgroup>
             <TableHeader className="bg-green-900">
               <TableRow>
-                <TableHead className="text-white font-extrabold text-lg uppercase tracking-wide">
+                <TableHead className="w-[65%] text-white font-extrabold text-lg uppercase tracking-wide">
                   Plato
                 </TableHead>
                 <TableHead
-                  className="text-white font-extrabold text-lg uppercase tracking-wide flex items-center gap-2 cursor-pointer select-none"
+                  className="w-[15%] text-white font-extrabold text-sm uppercase tracking-wide flex items-center gap-2 cursor-pointer select-none"
                   onClick={() =>
                     setSortOrder((prev) =>
                       prev === "asc" ? "desc" : prev === "desc" ? null : "asc"
@@ -229,8 +234,8 @@ export default function Master() {
                     }`}
                   />
                 </TableHead>
-                <TableHead className="text-white font-extrabold text-lg uppercase tracking-wide text-center">
-                  Activo
+                <TableHead className="w-[20%] text-white font-extrabold text-lg uppercase tracking-wide text-center">
+                  ✅
                 </TableHead>
               </TableRow>
             </TableHeader>
@@ -267,7 +272,7 @@ export default function Master() {
                               meal.availability?.isAvailable
                             )
                           }
-                          className="data-[state=checked]:bg-white data-[state=unchecked]:bg-green-950"
+                          className="data-[state=checked]:bg-green-600 data-[state=unchecked]:bg-green-950"
                         />
                       )}
                     </div>
