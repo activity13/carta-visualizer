@@ -13,10 +13,10 @@ export default async function LaK() {
 
   // Usa el dominio correcto según el entorno
   const baseUrl =
-    process.env.NEXT_PUBLIC_API_URL ||
-    (process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : "http://localhost:3000");
+    process.env.API_INTERNAL_URL ||
+    (process.env.NODE_ENV === "development"
+      ? "http://localhost:3000"
+      : "https://viw-carta.vercel.app");
 
   const res = await fetch(`${baseUrl}/api/public/menu/${subdomain}`, {
     next: { tags: [`menu-${subdomain}`] },
@@ -27,6 +27,11 @@ export default async function LaK() {
   }
 
   const data = await res.json();
+  console.log(
+    "Runtime environment:",
+    process.env.NODE_ENV,
+    process.env.VERCEL_URL
+  );
 
   // Encontramos la categoría "Plato del día"
   // const platoDelDiaCategory = data?.categories?.find(

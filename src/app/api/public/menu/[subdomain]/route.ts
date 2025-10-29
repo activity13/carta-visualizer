@@ -7,15 +7,16 @@ import MealSchema from "@/models/meals";
 
 export async function GET(
   req: Request,
-  context: { params: Promise<{ subdomain: string }> }
+  { params }: { params: { subdomain: string } }
 ) {
   try {
-    const { subdomain } = await context.params; //
+    const { subdomain } = await params; //
     const tag = `menu-${subdomain}`;
     await connectToDatabase();
     console.log("⚡ Regenerando menú desde la DB:", new Date().toISOString());
     // 1. Buscar restaurante
     const restaurant = await Restaurant.findOne({ slug: subdomain });
+    console.log("🚀 ~ route.ts:19 ~ GET ~ restaurant:", restaurant);
     if (!restaurant) {
       return NextResponse.json(
         { error: "Restaurante no encontrado" },
@@ -26,7 +27,7 @@ export async function GET(
     // 2. Buscar categorías del restaurante
     const categories = await CategorySchema.find({
       restaurantId: restaurant._id,
-      "display.showInMenu": true,
+      isActive: true,
     }).sort({ order: 1 });
 
     // 3. Buscar platos del restaurante
@@ -76,7 +77,8 @@ export async function GET(
       },
       {
         headers: {
-          "Cache-Tag": tag, // 🔥 esto ayuda al control de caché por tag
+          // Header correcto para cache tags en Next 15
+          "x-next-cache-tags": tag,
         },
         status: 200,
       }

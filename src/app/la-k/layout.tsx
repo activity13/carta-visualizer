@@ -18,6 +18,9 @@ export async function generateMetadata(): Promise<Metadata> {
     title: "La K - El mejor restaurante de todo vichayito",
     description:
       "Descubre el menú de La K, el restaurante más popular de Vichayito. Disfruta de platos deliciosos y auténticos en un ambiente acogedor.",
+    icons: {
+      icon: `/la-k/images/favicon.ico`,
+    },
     alternates: {
       canonical: `https://tu-dominio.com/la-k`,
     },

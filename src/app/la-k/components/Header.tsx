@@ -23,12 +23,11 @@ export default function Header({ restaurant }: HeaderProps) {
   return (
     <>
       {/* Espacio reservado para evitar solapamiento */}
-      <div />
 
       <header
         className={`fixed md:left-15 ${
           scrolled ? "  bottom-20" : "bottom-24"
-        }  xl:top-5 left-0 w-full z-50 transition-all duration-500
+        }  xl:top-5 left-0 z-50 transition-all duration-500
   
         `}
       >
