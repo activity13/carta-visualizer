@@ -55,7 +55,7 @@ export default function NavBar() {
               <Home className="h-4 w-4" />
             </Link>
             <Link
-              href="/backoffice/settings"
+              href="/backoffice/business-profile"
               className="p-2 rounded-md text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
               aria-label="Config"
             >
