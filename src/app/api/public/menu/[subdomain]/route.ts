@@ -7,7 +7,7 @@ import MealSchema from "@/models/meals";
 
 export async function GET(
   req: Request,
-  { params }: { params: { subdomain: string } }
+  { params }: { params: Promise<{ subdomain: string }> }
 ) {
   try {
     const { subdomain } = await params; //
