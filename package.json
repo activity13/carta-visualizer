@@ -23,6 +23,7 @@
     "data-table": "^2.0.0",
     "dialog": "^0.3.1",
     "embla-carousel-react": "^8.6.0",
+    "google-translate-api-x": "^10.7.2",
     "lucide-react": "^0.513.0",
     "mongoose": "^8.15.1",
     "next": "15.3.2",

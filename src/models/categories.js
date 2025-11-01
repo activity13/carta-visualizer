@@ -8,6 +8,10 @@ const CategorySchema = new Schema(
       trim: true,
       maxlength: [100, "El nombre no puede exceder 100 caracteres"],
     },
+    name_en: {
+      type: String,
+      trim: true,
+    },
     code: {
       type: Number,
       required: [true, "El código de la categoría es obligatorio"],
@@ -23,6 +27,12 @@ const CategorySchema = new Schema(
       trim: true,
     },
     description: {
+      type: String,
+      trim: true,
+      maxlength: [300, "La descripción no puede exceder 300 caracteres"],
+      default: "",
+    },
+    description_en: {
       type: String,
       trim: true,
       maxlength: [300, "La descripción no puede exceder 300 caracteres"],

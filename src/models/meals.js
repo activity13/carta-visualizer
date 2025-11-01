@@ -174,14 +174,22 @@ const MealSchema = new Schema(
       trim: true,
       maxlength: [100, "El nombre no puede exceder 100 caracteres"],
     },
+    name_en: {
+      type: String,
+      trim: true,
+    },
     slug: {
       type: String,
       unique: true,
       lowercase: true,
       trim: true,
     }, // auto-generado: "ceviche-mixto-123"
-
     description: {
+      type: String,
+      trim: true,
+      maxlength: [500, "La descripción no puede exceder 500 caracteres"],
+    },
+    description_en: {
       type: String,
       trim: true,
       maxlength: [500, "La descripción no puede exceder 500 caracteres"],
@@ -191,7 +199,11 @@ const MealSchema = new Schema(
       trim: true,
       maxlength: [100, "La descripción corta no puede exceder 100 caracteres"],
     }, // para móviles
-
+    shortDescription_en: {
+      type: String,
+      trim: true,
+      maxlength: [100, "La descripción corta no puede exceder 100 caracteres"],
+    },
     // Precios
     basePrice: {
       type: Number,
@@ -213,6 +225,10 @@ const MealSchema = new Schema(
           type: String,
           default: "",
         },
+        alt_en: {
+          type: String,
+          default: "",
+        },
         isPrimary: {
           type: Boolean,
           default: false,
@@ -231,8 +247,29 @@ const MealSchema = new Schema(
         trim: true,
       },
     ], // ["Pescado fresco", "Cebolla roja", "Ají amarillo"]
-
+    ingredients_en: [
+      {
+        type: String,
+        trim: true,
+      },
+    ],
     allergens: [
+      {
+        type: String,
+        enum: [
+          "gluten",
+          "lactosa",
+          "nueces",
+          "maní",
+          "huevos",
+          "soya",
+          "fish",
+          "mariscos",
+          "ajonjolí",
+        ],
+      },
+    ],
+    allergens_en: [
       {
         type: String,
         enum: [
@@ -251,6 +288,24 @@ const MealSchema = new Schema(
 
     // Etiquetas dietéticas
     dietaryTags: [
+      {
+        type: String,
+        enum: [
+          "vegetariano",
+          "vegano",
+          "gluten-free",
+          "dairy-free",
+          "keto",
+          "bajos-carbs",
+          "alta-proteina",
+          "organico",
+          "picante",
+          "mild",
+          "recomendación-chef",
+        ],
+      },
+    ],
+    dietaryTags_en: [
       {
         type: String,
         enum: [
@@ -364,7 +419,13 @@ const MealSchema = new Schema(
         trim: true,
       },
     ], // palabras clave para búsqueda interna
-
+    searchTags_en: [
+      {
+        type: String,
+        lowercase: true,
+        trim: true,
+      },
+    ],
     // Timestamps
     createdAt: {
       type: Date,

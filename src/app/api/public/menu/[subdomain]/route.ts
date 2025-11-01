@@ -60,6 +60,10 @@ export async function GET(
         })),
       };
     });
+    console.log(
+      "🚀 ~ route.ts:63 ~ GET ~ categoriesWithMeals:",
+      categoriesWithMeals
+    );
     // 5. Respuesta final
     return NextResponse.json(
       {
