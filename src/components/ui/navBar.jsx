@@ -1,7 +1,8 @@
 import * as React from "react";
 import Link from "next/link";
-import { Cog, Home } from "lucide-react";
+import { Cog, Home, Languages } from "lucide-react";
 import LogoutButton from "./LogoutButton";
+
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -41,6 +42,17 @@ export default function NavBar() {
               </Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink asChild>
+              <Link
+                href="/backoffice/business-profile"
+                className="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+              >
+                <Languages className="h-4 w-4" />
+                Traductor
+              </Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
         </NavigationMenuList>
 
         {/* Right: Logout (and mobile quick icons) */}
@@ -60,6 +72,13 @@ export default function NavBar() {
               aria-label="Config"
             >
               <Cog className="h-4 w-4" />
+            </Link>
+            <Link
+              href="/backoffice/translations"
+              className="p-2 rounded-md text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+              aria-label="Config"
+            >
+              <Languages className="h-4 w-4" />
             </Link>
           </div>
 

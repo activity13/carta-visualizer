@@ -8,7 +8,7 @@ export default function NotFound() {
           Acceso Denegado
         </h1>
         <p className="text-lg text-gray-200 mb-8 text-center font-mono">
-          Esta página forma parte de la red digital de restaurantes viw.
+          Esta página forma parte de la red digital de negocios viw.
           <br />
         </p>
         <Link href="/" passHref>
@@ -26,8 +26,9 @@ export default function NotFound() {
             Volver al Home
           </button>
         </Link>
-        <span className="mt-6 text-xs text-green-700 font-mono opacity-70">
-          Plataforma clandestina · Restaurante VIP
+        <span className="text-center mt-6 text-xs text-green-700 font-mono opacity-70">
+          Conoce más de la mejor plataforma de menús digitales en{" "}
+          <Link href="https://viw-carta.com">viw-carta.com</Link>
         </span>
       </div>
     </div>
