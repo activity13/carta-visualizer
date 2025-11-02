@@ -45,7 +45,7 @@ export default function NavBar() {
           <NavigationMenuItem>
             <NavigationMenuLink asChild>
               <Link
-                href="/backoffice/business-profile"
+                href="/backoffice/translate"
                 className="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
               >
                 <Languages className="h-4 w-4" />
@@ -74,7 +74,7 @@ export default function NavBar() {
               <Cog className="h-4 w-4" />
             </Link>
             <Link
-              href="/backoffice/translations"
+              href="/backoffice/translate"
               className="p-2 rounded-md text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
               aria-label="Config"
             >
