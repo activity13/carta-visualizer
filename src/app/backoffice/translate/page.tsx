@@ -99,7 +99,7 @@ export default function TranslationPage() {
       return res.data;
     },
     onMutate: () => toast.loading("Traduciendo automáticamente..."),
-    onSuccess: async (data) => {
+    onSuccess: async () => {
       toast.dismiss();
       toast.success("Traducción completada con éxito");
       await refreshMenu();

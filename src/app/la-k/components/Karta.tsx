@@ -48,8 +48,8 @@ function KartaContent({ data, restaurant }: KartaProps) {
   // Helper de traducción con fallback al ES
   const t = (es?: string, en?: string) =>
     language === "en" && en ? en : es || "";
-  const tArr = (es?: string[], en?: string[]) =>
-    language === "en" && en && en.length ? en : es || [];
+  // const tArr = (es?: string[], en?: string[]) =>
+  //   language === "en" && en && en.length ? en : es || [];
 
   const filteredCategories = data.categories.filter((category) => {
     const joined = `${category.name || ""} ${
