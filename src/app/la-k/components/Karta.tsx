@@ -5,6 +5,8 @@ import { Pizza, Utensils } from "lucide-react";
 import DecorativeFrame from "./DecorativeBorder";
 import FloatingActionGroup from "./FloatingActionGroup";
 import Image from "next/image";
+import { LanguageProvider, useLanguage } from "@/hooks/useLanguage";
+import LanguageToggle from "@/components/ui/LanguageToggle";
 
 interface Meal {
   id: string;
@@ -12,6 +14,10 @@ interface Meal {
   price: number;
   description?: string;
   ingredients?: string[];
+  // Campos en inglés (opcionales)
+  name_en?: string;
+  description_en?: string;
+  ingredients_en?: string[];
 }
 
 interface Category {
@@ -19,6 +25,9 @@ interface Category {
   name: string;
   meals: Meal[];
   description?: string;
+  // Campos en inglés (opcionales)
+  name_en?: string;
+  description_en?: string;
 }
 
 interface KartaData {
@@ -32,14 +41,23 @@ interface KartaProps {
 
 type MenuType = "principal" | "pizzas";
 
-export default function LaKarta({ data, restaurant }: KartaProps) {
+function KartaContent({ data, restaurant }: KartaProps) {
+  const { language } = useLanguage();
   const [activeMenu, setActiveMenu] = useState<MenuType>("principal");
 
+  // Helper de traducción con fallback al ES
+  const t = (es?: string, en?: string) =>
+    language === "en" && en ? en : es || "";
+  const tArr = (es?: string[], en?: string[]) =>
+    language === "en" && en && en.length ? en : es || [];
+
   const filteredCategories = data.categories.filter((category) => {
-    const categoryName = category.name.toLowerCase();
+    const joined = `${category.name || ""} ${
+      category.name_en || ""
+    }`.toLowerCase();
     return activeMenu === "pizzas"
-      ? categoryName.includes("pizza")
-      : !categoryName.includes("pizza");
+      ? joined.includes("pizza")
+      : !joined.includes("pizza");
   });
 
   const half = Math.ceil(filteredCategories.length / 2);
@@ -47,28 +65,32 @@ export default function LaKarta({ data, restaurant }: KartaProps) {
   const right = filteredCategories.slice(half);
 
   return (
-    <div className="w-full min-h-3.5  md:min-h-screen">
-      {/* Grupo de botones que te permiten desplazarte comodamente por las categorias en la versión para móvil */}
+    <div className="w-full min-h-3.5  md:min-h-screen relative">
+      {/* Toggle de idioma fijo */}
+      <div className="fixed bottom-38 right-4 z-50">
+        <LanguageToggle />
+      </div>
+
+      {/* Nav móvil de categorías (usa ancla estable por id) */}
       <div className="fixed bottom-0 left-0 w-full z-50 border-t border-black bg-neutral-50 shadow-inner overflow-x-auto lg:hidden">
         <div className="flex gap-3 px-4 py-3 min-w-full overflow-x-auto scrollbar-none">
           {filteredCategories.map((category) => (
             <button
               key={category.id}
               onClick={() => {
-                const target = document.getElementById(
-                  category.name.toLowerCase().replace(/\s+/g, "-")
-                );
+                const target = document.getElementById(`cat-${category.id}`);
                 if (target) {
                   target.scrollIntoView({ behavior: "smooth", block: "start" });
                 }
               }}
               className="whitespace-nowrap px-4 py-2 text-sm uppercase tracking-wider text-black font-semibold border border-black rounded-md bg-white shadow-sm active:scale-95 active:bg-black active:text-white transition-all duration-150"
             >
-              {category.name}
+              {t(category.name, category.name_en)}
             </button>
           ))}
         </div>
       </div>
+
       <DecorativeFrame>
         {/* Contenedor del menú dentro del marco */}
         <div className="w-full mx-auto p-4 md:p-6 overflow-x-hidden">
@@ -82,7 +104,9 @@ export default function LaKarta({ data, restaurant }: KartaProps) {
                 )}
               </div>
               <p className="text-gray-500 text-lg font-medium">
-                No hay categorías disponibles en esta carta
+                {language === "en"
+                  ? "No categories available in this menu"
+                  : "No hay categorías disponibles en esta carta"}
               </p>
             </div>
           ) : (
@@ -95,84 +119,85 @@ export default function LaKarta({ data, restaurant }: KartaProps) {
             >
               {activeMenu === "pizzas" ? (
                 <div className="flex flex-col space-y-8">
-                  {filteredCategories.map((category) => (
-                    <div
-                      key={category.id}
-                      id={category.name.toLowerCase().replace(/\s+/g, "-")}
-                    >
-                      <div>
-                        {category.name === "Pizzas" && (
-                          <div className="flex py-6  lg:mb-10 justify-center text-center flex-col items-center">
+                  {filteredCategories.map((category) => {
+                    const isPizzas =
+                      /pizza/i.test(category.name || "") ||
+                      /pizza/i.test(category.name_en || "");
+                    return (
+                      <div key={category.id} id={`cat-${category.id}`}>
+                        <div>
+                          {isPizzas && (
+                            <div className="flex py-6  lg:mb-10 justify-center text-center flex-col items-center">
+                              <Image
+                                src="/la-k/images/pizzas-la-k-title.svg"
+                                alt="Carta de pizzas la k vichayito"
+                                width={100}
+                                height={100}
+                              />
+                              <h3 className="text-sm md:text-2xl">
+                                {language === "en"
+                                  ? "Family size, thin crust"
+                                  : "Tamaño familiar masa delgada"}
+                              </h3>
+                            </div>
+                          )}
+                          {t(category.description, category.description_en) && (
+                            <p className="whitespace-pre-line text-center text-xs md:text-4xl text-gray-600 mb-4">
+                              {t(category.description, category.description_en)}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Lista de platos */}
+                        <div className=" lg:p-10">
+                          {category.meals.map((meal) => (
+                            <div
+                              key={meal.id}
+                              className="flex items-start justify-between gap-4 group leading-none active:scale-95 active:bg-gray-100 transition-transform duration-150"
+                            >
+                              <div className="flex-1 md:flex md:flex-row">
+                                <h5 className="text-[0.80rem] md:text-lg text-gray-900 uppercase tracking-wide leading-tight m-0 p-0 whitespace-nowrap">
+                                  {t(meal.name, meal.name_en)}
+                                </h5>
+                                {t(meal.description, meal.description_en) && (
+                                  <p className="flex text-[0.7rem] md:text-xs text-gray-600 leading-relaxed uppercase">
+                                    {t(meal.description, meal.description_en)}
+                                  </p>
+                                )}
+                              </div>
+                              <div className="text-right">
+                                <span className="text-[0.80rem] md:text-lg text-gray-900 uppercase tracking-wide leading-tight whitespace-nowrap">
+                                  S/ {meal.price.toFixed(2)}
+                                </span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        {isPizzas && (
+                          <div className="flex mt-4 sm:mt-20 p-6 justify-center text-center flex-col items-center">
                             <Image
-                              src="/la-k/images/pizzas-la-k-title.svg"
+                              src="/la-k/images/la-k-footer-divider.svg"
                               alt="Carta de pizzas la k vichayito"
                               width={100}
                               height={100}
                             />
-                            <h3 className="text-sm md:text-2xl">
-                              Tamaño familiar masa delgada
-                            </h3>
                           </div>
                         )}
-                        {category.description && (
-                          <p className="whitespace-pre-line text-center text-xs md:text-4xl text-gray-600 mb-4">
-                            {category.description}
-                          </p>
-                        )}
                       </div>
-
-                      {/* Lista de platos */}
-                      <div className=" lg:p-10">
-                        {category.meals.map((meal) => (
-                          <div
-                            key={meal.id}
-                            className="flex items-start justify-between gap-4 group leading-none active:scale-95 active:bg-gray-100 transition-transform duration-150"
-                          >
-                            <div className="flex-1 md:flex md:flex-row">
-                              <h5 className="text-[0.80rem] md:text-lg text-gray-900 uppercase tracking-wide leading-tight m-0 p-0 whitespace-nowrap">
-                                {meal.name}
-                              </h5>
-                              {meal.description && (
-                                <p className="flex text-[0.7rem] md:text-xs text-gray-600 leading-relaxed uppercase">
-                                  {meal.description}
-                                </p>
-                              )}
-                            </div>
-                            <div className="text-right">
-                              <span className="text-[0.80rem] md:text-lg text-gray-900 uppercase tracking-wide leading-tight whitespace-nowrap">
-                                S/ {meal.price.toFixed(2)}
-                              </span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-
-                      {category.name === "Pizzas" && (
-                        <div className="flex mt-4 sm:mt-20 p-6 justify-center text-center flex-col items-center">
-                          <Image
-                            src="/la-k/images/la-k-footer-divider.svg"
-                            alt="Carta de pizzas la k vichayito"
-                            width={100}
-                            height={100}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               ) : (
                 <>
                   {/* Columna izquierda */}
                   <div className="flex flex-col space-y-8">
                     {left.map((category) => (
-                      <div
-                        key={category.id}
-                        id={category.name.toLowerCase().replace(/\s+/g, "-")}
-                      >
-                        {category.name !== "Salsas" && (
+                      <div key={category.id} id={`cat-${category.id}`}>
+                        {!(t(category.name, category.name_en) === "Salsas") && (
                           <div>
                             <h2 className="text-center text-xs font-bold uppercase tracking-wider text-gray-900">
-                              {category.name}
+                              {t(category.name, category.name_en)}
                             </h2>
                             <div className="flex justify-center mb-4">
                               <Image
@@ -184,9 +209,9 @@ export default function LaKarta({ data, restaurant }: KartaProps) {
                             </div>
                           </div>
                         )}
-                        {category.description && (
+                        {t(category.description, category.description_en) && (
                           <p className="whitespace-pre-line text-start text-xs text-gray-600">
-                            {category.description}
+                            {t(category.description, category.description_en)}
                           </p>
                         )}
 
@@ -199,11 +224,11 @@ export default function LaKarta({ data, restaurant }: KartaProps) {
                             >
                               <div className="flex-1">
                                 <h5 className="text-[0.80rem]  text-gray-900 uppercase tracking-wide leading-tight m-0 p-0">
-                                  {meal.name}
+                                  {t(meal.name, meal.name_en)}
                                 </h5>
-                                {meal.description && (
+                                {t(meal.description, meal.description_en) && (
                                   <p className="text-[0.7rem] text-gray-600 leading-relaxed">
-                                    {meal.description}
+                                    {t(meal.description, meal.description_en)}
                                   </p>
                                 )}
                               </div>
@@ -221,14 +246,11 @@ export default function LaKarta({ data, restaurant }: KartaProps) {
                   {/* Columna derecha */}
                   <div className="flex flex-col space-y-8">
                     {right.map((category) => (
-                      <div
-                        key={category.id}
-                        id={category.name.toLowerCase().replace(/\s+/g, "-")}
-                      >
-                        {category.name !== "Salsas" && (
+                      <div key={category.id} id={`cat-${category.id}`}>
+                        {!(t(category.name, category.name_en) === "Salsas") && (
                           <div>
                             <h2 className="text-center text-xs font-bold uppercase tracking-wider text-gray-900">
-                              {category.name}
+                              {t(category.name, category.name_en)}
                             </h2>
                             <div className="flex justify-center mb-4">
                               <Image
@@ -240,9 +262,9 @@ export default function LaKarta({ data, restaurant }: KartaProps) {
                             </div>
                           </div>
                         )}
-                        {category.description && (
+                        {t(category.description, category.description_en) && (
                           <p className="whitespace-pre-line text-start text-xs text-gray-600">
-                            {category.description}
+                            {t(category.description, category.description_en)}
                           </p>
                         )}
 
@@ -255,11 +277,11 @@ export default function LaKarta({ data, restaurant }: KartaProps) {
                             >
                               <div className="flex-1">
                                 <h5 className="text-[0.80rem]  text-gray-900 uppercase tracking-wide leading-tight m-0 p-0">
-                                  {meal.name}
+                                  {t(meal.name, meal.name_en)}
                                 </h5>
-                                {meal.description && (
+                                {t(meal.description, meal.description_en) && (
                                   <p className="text-[0.7rem] text-gray-600 leading-relaxed">
-                                    {meal.description}
+                                    {t(meal.description, meal.description_en)}
                                   </p>
                                 )}
                               </div>
@@ -280,11 +302,20 @@ export default function LaKarta({ data, restaurant }: KartaProps) {
           )}
         </div>
       </DecorativeFrame>
+
       <FloatingActionGroup
         restaurant={restaurant}
         activeMenu={activeMenu}
         onChange={setActiveMenu}
       />
     </div>
+  );
+}
+
+export default function LaKarta(props: KartaProps) {
+  return (
+    <LanguageProvider>
+      <KartaContent {...props} />
+    </LanguageProvider>
   );
 }

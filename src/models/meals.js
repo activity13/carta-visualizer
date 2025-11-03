@@ -178,6 +178,10 @@ const MealSchema = new Schema(
       type: String,
       trim: true,
     },
+    name_en_manual: {
+      type: Boolean,
+      default: false,
+    },
     slug: {
       type: String,
       unique: true,
@@ -194,6 +198,10 @@ const MealSchema = new Schema(
       trim: true,
       maxlength: [500, "La descripción no puede exceder 500 caracteres"],
     },
+    description_en_manual: {
+      type: Boolean,
+      default: false,
+    },
     shortDescription: {
       type: String,
       trim: true,
@@ -203,6 +211,10 @@ const MealSchema = new Schema(
       type: String,
       trim: true,
       maxlength: [100, "La descripción corta no puede exceder 100 caracteres"],
+    },
+    shortDescription_en_manual: {
+      type: Boolean,
+      default: false,
     },
     // Precios
     basePrice: {
@@ -229,6 +241,10 @@ const MealSchema = new Schema(
           type: String,
           default: "",
         },
+        alt_en_manual: {
+          type: Boolean,
+          default: false,
+        },
         isPrimary: {
           type: Boolean,
           default: false,
@@ -253,6 +269,10 @@ const MealSchema = new Schema(
         trim: true,
       },
     ],
+    ingredients_en_manual: {
+      type: Boolean,
+      default: false,
+    },
     allergens: [
       {
         type: String,
@@ -285,7 +305,10 @@ const MealSchema = new Schema(
         ],
       },
     ],
-
+    allergens_en_manual: {
+      type: Boolean,
+      default: false,
+    },
     // Etiquetas dietéticas
     dietaryTags: [
       {
@@ -323,7 +346,10 @@ const MealSchema = new Schema(
         ],
       },
     ],
-
+    dietaryTags_en_manual: {
+      type: Boolean,
+      default: false,
+    },
     // Variantes y personalizaciones
     variants: [VariantGroupSchema],
 
@@ -426,6 +452,10 @@ const MealSchema = new Schema(
         trim: true,
       },
     ],
+    serchTags_en_manual: {
+      type: Boolean,
+      default: false,
+    },
     // Timestamps
     createdAt: {
       type: Date,

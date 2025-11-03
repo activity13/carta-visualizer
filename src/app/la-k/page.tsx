@@ -1,6 +1,7 @@
 import Header from "./components/Header";
 import LaKarta from "./components/Karta";
-
+import { useLanguage } from "@/hooks/useLanguage";
+import LanguageToggle from "@/components/ui/LanguageToggle";
 // interface catProps {
 //   name: string;
 // }

@@ -45,18 +45,23 @@ export async function GET(
       return {
         id: cat._id,
         name: cat.name,
+        name_en: cat.name_en,
         slug: cat.slug,
         description: cat.description,
+        description_en: cat.description_en,
         meals: catMeals.map((m) => ({
           id: m._id,
           name: m.name,
+          name_en: m.name_en,
           description: m.shortDescription || m.description,
+          description_en: m.shortDescription_en || m.description_en,
           price: m.basePrice,
           comparePrice: m.comparePrice,
           images: m.images,
           tags: m.dietaryTags,
           featured: m.display.isFeatured,
           ingredients: [m.ingredients],
+          ingredients_en: [m.ingredients_en],
         })),
       };
     });

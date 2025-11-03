@@ -149,32 +149,98 @@ export async function POST(req: Request) {
 
     // 7) Si el flag save está activado, actualizar la base de datos
     if (save) {
-      const categoryOps = translated.map((cat) =>
-        CategorySchema.updateOne(
-          { _id: cat.id },
-          {
-            $set: {
-              name_en: cat.name,
-              description_en: cat.description || "",
-            },
-          }
-        )
-      );
+      console.log("Flag save, updating database with translations...");
 
-      const mealOps = translated.flatMap((cat) =>
-        cat.meals.map((meal) =>
-          MealSchema.updateOne(
-            { _id: meal.id },
+      // Categorías: actualizar por campo solo si no fue editado manualmente
+      const categoryOps: Promise<unknown>[] = [];
+      for (const cat of translated) {
+        // name_en
+        categoryOps.push(
+          CategorySchema.updateOne(
             {
-              $set: {
-                name_en: meal.name,
-                description_en: meal.description || "",
-                ingredients_en: meal.ingredients || [],
-              },
-            }
+              _id: cat.id,
+              restaurantId: id,
+              $or: [
+                { name_en_manual: { $exists: false } },
+                { name_en_manual: { $ne: true } },
+              ],
+            },
+            { $set: { name_en: cat.name } }
           )
-        )
-      );
+        );
+
+        // description_en
+        categoryOps.push(
+          CategorySchema.updateOne(
+            {
+              _id: cat.id,
+              restaurantId: id,
+              $or: [
+                { description_en_manual: { $exists: false } },
+                { description_en_manual: { $ne: true } },
+              ],
+            },
+            { $set: { description_en: cat.description ?? "" } }
+          )
+        );
+      }
+
+      // Platos: actualizar por campo solo si no fue editado manualmente
+      const mealOps: Promise<unknown>[] = [];
+      for (const cat of translated) {
+        for (const meal of cat.meals) {
+          // name_en
+          mealOps.push(
+            MealSchema.updateOne(
+              {
+                _id: meal.id,
+                restaurantId: id,
+                $or: [
+                  { name_en_manual: { $exists: false } },
+                  { name_en_manual: { $ne: true } },
+                ],
+              },
+              { $set: { name_en: meal.name } }
+            )
+          );
+
+          // description_en
+          mealOps.push(
+            MealSchema.updateOne(
+              {
+                _id: meal.id,
+                restaurantId: id,
+                $or: [
+                  { description_en_manual: { $exists: false } },
+                  { description_en_manual: { $ne: true } },
+                ],
+              },
+              { $set: { description_en: meal.description ?? "" } }
+            )
+          );
+
+          // ingredients_en
+          mealOps.push(
+            MealSchema.updateOne(
+              {
+                _id: meal.id,
+                restaurantId: id,
+                $or: [
+                  { ingredients_en_manual: { $exists: false } },
+                  { ingredients_en_manual: { $ne: true } },
+                ],
+              },
+              {
+                $set: {
+                  ingredients_en: Array.isArray(meal.ingredients)
+                    ? meal.ingredients
+                    : [],
+                },
+              }
+            )
+          );
+        }
+      }
 
       await Promise.all([...categoryOps, ...mealOps]);
     }
