@@ -24,15 +24,18 @@ export async function POST(
       );
     }
 
-    const results: any = { updatedMeals: [], updatedCategories: [] };
+    const results: { updatedMeals: unknown[]; updatedCategories: unknown[] } = {
+      updatedMeals: [],
+      updatedCategories: [],
+    };
 
     // 🔹 Actualizar categorías si vienen
     if (hasCategories) {
       for (const cat of body.categories) {
         if (!cat.id) continue;
 
-        const updateFields: any = {};
-        const manualFlags: any = {};
+        const updateFields: Record<string, unknown> = {};
+        const manualFlags: Record<string, unknown> = {};
 
         if (cat.name !== undefined) {
           updateFields.name = cat.name;
@@ -66,8 +69,8 @@ export async function POST(
       for (const meal of body.meals) {
         if (!meal.id) continue;
 
-        const updateFields: any = {};
-        const manualFlags: any = {};
+        const updateFields: Record<string, unknown> = {};
+        const manualFlags: Record<string, unknown> = {};
 
         if (meal.name !== undefined) {
           updateFields.name = meal.name;
