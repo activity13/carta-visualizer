@@ -7,7 +7,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-card">
       <section className="flex flex-col items-center  gap-6 p-4">
-        <h1 className="text-4xl font-bold">Bienvenido</h1>
+        <h1 className="text-4xl font-bold">¡Hola!</h1>
 
         <Button
           onClick={() => router.push("/backoffice/categories")}

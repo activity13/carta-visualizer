@@ -16,7 +16,7 @@ export default function FloatingActionGroup({
   const phoneData = restaurant.phone;
   const phoneNumber = phoneData.replace(/\s+/g, "").trim();
   const message = encodeURIComponent(
-    "¡Hola! Quisiera hacer un pedido o una consulta 🍕"
+    "¡Hola! Quisiera hacer un pedido del restaurante La K. Estoy en: "
   );
 
   return (
