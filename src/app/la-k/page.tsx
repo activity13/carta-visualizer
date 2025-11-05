@@ -16,7 +16,7 @@ export default async function LaK() {
     process.env.API_INTERNAL_URL ||
     (process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
-      : "https://viw-carta.vercel.app");
+      : "https://viw-carta.com");
 
   const res = await fetch(`${baseUrl}/api/public/menu/${subdomain}`, {
     next: { tags: [`menu-${subdomain}`] },
@@ -41,7 +41,7 @@ export default async function LaK() {
   // Aseguramos que tenga al menos un plato
   // const platoDelDia = platoDelDiaCategory?.meals?.[0];
   return (
-    <div className=" max-h-screen">
+    <div className=" min-h-screen">
       <Header restaurant={data.restaurant} />
       {/* {platoDelDia && (
         <PlatoDelDia

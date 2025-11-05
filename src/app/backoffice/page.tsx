@@ -1,5 +1,5 @@
 "use client";
-import Master from "@/components/ui/master";
+import Master from "@/components/ui/Master";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 export default function DashboardPage() {

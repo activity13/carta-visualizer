@@ -7,7 +7,7 @@ interface DecorativeFrameProps {
 
 export default function DecorativeFrame({ children }: DecorativeFrameProps) {
   return (
-    <div className="relative  w-full max-w-8xl mx-auto aspect-[3/4] md:aspect-[4/3] flex items-center justify-center overflow-hidden">
+    <div className="relative bg-white  w-full max-w-8xl mx-auto aspect-[3/4] md:aspect-[4/3] flex items-center justify-center overflow-hidden">
       {/* Marco SVG: mantiene proporción */}
       <div className="absolute inset-0">
         <Image
