@@ -43,7 +43,7 @@ export async function GET(
     if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
 
     // 1️⃣ Generar QR temporal (por ejemplo, con la URL del menú del negocio)
-    const qrData = `https://viw-carta.vercel.app/${business.slug}`;
+    const qrData = `https://${business.slug}.viw-carta.com`;
     const qrBuffer = await QRCode.toBuffer(qrData, {
       width: 600,
       color: { dark: "#000000", light: "#0000" }, // fondo transparente

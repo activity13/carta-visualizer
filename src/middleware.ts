@@ -5,34 +5,45 @@ import type { NextRequest } from "next/server";
 export default withAuth(
   function middleware(req: NextRequest) {
     const url = req.nextUrl;
+    const hostname = req.headers.get("host") || "";
+    const currentHost = hostname.split(":")[0];
+    const mainDomain = "viw-carta.com";
 
-    // --- LANDING PAGE ---
-    if (url.pathname === "/") {
-      return NextResponse.next();
+    // --- ROOT (landing page) ---
+    if (currentHost === mainDomain || currentHost === "localhost") {
+      if (url.pathname === "/") return NextResponse.next();
     }
 
     // --- BACKOFFICE ---
-    if (url.pathname.startsWith("/backoffice")) {
-      // rutas públicas dentro del backoffice
+    if (
+      currentHost === `app.${mainDomain}` ||
+      currentHost === "app.localhost"
+    ) {
+      // login y api auth son públicos
       if (
         url.pathname.startsWith("/backoffice/login") ||
         url.pathname.startsWith("/api/auth")
       ) {
         return NextResponse.next();
       }
-
-      // el resto requiere autenticación → lo maneja el callback authorized
       return NextResponse.next();
     }
 
-    // --- RESTAURANTES PÚBLICOS ---
-    // cualquier ruta como /la-k, /mi-restaurante, etc.
-    const pathParts = url.pathname.split("/").filter(Boolean);
-    const firstSegment = pathParts[0];
+    // --- RESTAURANTES (público) ---
+    let subdomain = "";
+    if (currentHost.endsWith(mainDomain)) {
+      subdomain = currentHost.replace(`.${mainDomain}`, "");
+    } else if (currentHost.endsWith("localhost")) {
+      subdomain = currentHost.replace(".localhost", "");
+    }
 
-    if (firstSegment && firstSegment !== "backoffice") {
-      // ruta de restaurante o sección pública
-      return NextResponse.next();
+    if (
+      subdomain &&
+      url.pathname !== `/${subdomain}` &&
+      !url.pathname.startsWith(`/${subdomain}/`)
+    ) {
+      url.pathname = `/${subdomain}${url.pathname}`;
+      return NextResponse.rewrite(url);
     }
 
     return NextResponse.next();
@@ -41,18 +52,22 @@ export default withAuth(
     callbacks: {
       authorized: ({ token, req }) => {
         const url = req.nextUrl;
+        const hostname = req.headers.get("host") || "";
+        const currentHost = hostname.split(":")[0];
+        const mainDomain = "viw-carta.com";
 
         // --- BACKOFFICE protegido ---
-        if (url.pathname.startsWith("/backoffice")) {
-          // login y auth son públicos
+        if (
+          currentHost === `app.${mainDomain}` ||
+          currentHost === "app.localhost"
+        ) {
           if (
             url.pathname.startsWith("/backoffice/login") ||
             url.pathname.startsWith("/api/auth")
           ) {
-            return true;
+            return true; // login y auth abiertos
           }
-          // el resto requiere sesión
-          return !!token;
+          return !!token; // el resto sí requiere sesión
         }
 
         // --- TODO LO DEMÁS ES PÚBLICO ---
