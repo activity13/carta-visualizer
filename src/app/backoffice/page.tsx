@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import Master from "@/components/ui/Master";
 import { useRouter } from "next/navigation";
+import Master from "@/components/ui/Master";
 export default function DashboardPage() {
   const router = useRouter();
   return (
