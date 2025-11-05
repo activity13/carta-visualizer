@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import Master from "../../components/ui/master";
 export default function DashboardPage() {
   const router = useRouter();
   return (
@@ -27,6 +28,8 @@ export default function DashboardPage() {
         >
           Elige tus categorías aquí
         </Button>
+
+        <Master />
       </section>
     </div>
   );
