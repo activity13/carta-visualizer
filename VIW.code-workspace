@@ -5,6 +5,12 @@
     },
     {
       "path": "../Haak/high-as-a-kite"
+    },
+    {
+      "path": "../viw-mcp"
+    },
+    {
+      "path": "../.vscode"
     }
   ]
 }
